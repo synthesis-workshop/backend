@@ -77,5 +77,5 @@ export const lists: Lists = {
         defaultValue: { kind: "now" },
       }),
     },
-  })
+  }),
 };
