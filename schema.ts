@@ -19,6 +19,7 @@ import {
   checkbox,
   select,
   image,
+  file,
 } from "@keystone-6/core/fields";
 
 // the document field is a more complicated field, so it has it's own package
@@ -78,4 +79,16 @@ export const lists: Lists = {
       }),
     },
   }),
+  Download: list({
+
+    access: allowAll,
+    
+    fields: {
+      title: text({ validation: { isRequired:true } }),
+
+      lastUpdated: timestamp({ defaultValue: { kind: "now" } }),
+
+      file: file({})
+    }
+  })
 };
