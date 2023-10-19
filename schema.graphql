@@ -136,6 +136,164 @@ input UserCreateInput {
   lastLoginDate: DateTime
 }
 
+type Episode {
+  id: ID!
+  title: String
+  description: String
+  episodeNumber: Float
+  section: String
+  runtime: String
+  publishedAt: DateTime
+  status: String
+  keyword(where: KeywordWhereInput! = {}, orderBy: [KeywordOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: KeywordWhereUniqueInput): [Keyword!]
+  keywordCount(where: KeywordWhereInput! = {}): Int
+}
+
+input EpisodeWhereUniqueInput {
+  id: ID
+  episodeNumber: Float
+}
+
+input EpisodeWhereInput {
+  AND: [EpisodeWhereInput!]
+  OR: [EpisodeWhereInput!]
+  NOT: [EpisodeWhereInput!]
+  id: IDFilter
+  title: StringFilter
+  description: StringFilter
+  episodeNumber: FloatNullableFilter
+  section: StringFilter
+  runtime: StringFilter
+  publishedAt: DateTimeNullableFilter
+  status: StringNullableFilter
+  keyword: KeywordManyRelationFilter
+}
+
+input FloatNullableFilter {
+  equals: Float
+  in: [Float!]
+  notIn: [Float!]
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: FloatNullableFilter
+}
+
+input KeywordManyRelationFilter {
+  every: KeywordWhereInput
+  some: KeywordWhereInput
+  none: KeywordWhereInput
+}
+
+input EpisodeOrderByInput {
+  id: OrderDirection
+  title: OrderDirection
+  description: OrderDirection
+  episodeNumber: OrderDirection
+  section: OrderDirection
+  runtime: OrderDirection
+  publishedAt: OrderDirection
+  status: OrderDirection
+}
+
+input EpisodeUpdateInput {
+  title: String
+  description: String
+  episodeNumber: Float
+  section: String
+  runtime: String
+  publishedAt: DateTime
+  status: String
+  keyword: KeywordRelateToManyForUpdateInput
+}
+
+input KeywordRelateToManyForUpdateInput {
+  disconnect: [KeywordWhereUniqueInput!]
+  set: [KeywordWhereUniqueInput!]
+  create: [KeywordCreateInput!]
+  connect: [KeywordWhereUniqueInput!]
+}
+
+input EpisodeUpdateArgs {
+  where: EpisodeWhereUniqueInput!
+  data: EpisodeUpdateInput!
+}
+
+input EpisodeCreateInput {
+  title: String
+  description: String
+  episodeNumber: Float
+  section: String
+  runtime: String
+  publishedAt: DateTime
+  status: String
+  keyword: KeywordRelateToManyForCreateInput
+}
+
+input KeywordRelateToManyForCreateInput {
+  create: [KeywordCreateInput!]
+  connect: [KeywordWhereUniqueInput!]
+}
+
+type Keyword {
+  id: ID!
+  keyword: String
+  keywordRelation(where: EpisodeWhereInput! = {}, orderBy: [EpisodeOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: EpisodeWhereUniqueInput): [Episode!]
+  keywordRelationCount(where: EpisodeWhereInput! = {}): Int
+}
+
+input KeywordWhereUniqueInput {
+  id: ID
+}
+
+input KeywordWhereInput {
+  AND: [KeywordWhereInput!]
+  OR: [KeywordWhereInput!]
+  NOT: [KeywordWhereInput!]
+  id: IDFilter
+  keyword: StringFilter
+  keywordRelation: EpisodeManyRelationFilter
+}
+
+input EpisodeManyRelationFilter {
+  every: EpisodeWhereInput
+  some: EpisodeWhereInput
+  none: EpisodeWhereInput
+}
+
+input KeywordOrderByInput {
+  id: OrderDirection
+  keyword: OrderDirection
+}
+
+input KeywordUpdateInput {
+  keyword: String
+  keywordRelation: EpisodeRelateToManyForUpdateInput
+}
+
+input EpisodeRelateToManyForUpdateInput {
+  disconnect: [EpisodeWhereUniqueInput!]
+  set: [EpisodeWhereUniqueInput!]
+  create: [EpisodeCreateInput!]
+  connect: [EpisodeWhereUniqueInput!]
+}
+
+input KeywordUpdateArgs {
+  where: KeywordWhereUniqueInput!
+  data: KeywordUpdateInput!
+}
+
+input KeywordCreateInput {
+  keyword: String
+  keywordRelation: EpisodeRelateToManyForCreateInput
+}
+
+input EpisodeRelateToManyForCreateInput {
+  create: [EpisodeCreateInput!]
+  connect: [EpisodeWhereUniqueInput!]
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -148,6 +306,18 @@ type Mutation {
   updateUsers(data: [UserUpdateArgs!]!): [User]
   deleteUser(where: UserWhereUniqueInput!): User
   deleteUsers(where: [UserWhereUniqueInput!]!): [User]
+  createEpisode(data: EpisodeCreateInput!): Episode
+  createEpisodes(data: [EpisodeCreateInput!]!): [Episode]
+  updateEpisode(where: EpisodeWhereUniqueInput!, data: EpisodeUpdateInput!): Episode
+  updateEpisodes(data: [EpisodeUpdateArgs!]!): [Episode]
+  deleteEpisode(where: EpisodeWhereUniqueInput!): Episode
+  deleteEpisodes(where: [EpisodeWhereUniqueInput!]!): [Episode]
+  createKeyword(data: KeywordCreateInput!): Keyword
+  createKeywords(data: [KeywordCreateInput!]!): [Keyword]
+  updateKeyword(where: KeywordWhereUniqueInput!, data: KeywordUpdateInput!): Keyword
+  updateKeywords(data: [KeywordUpdateArgs!]!): [Keyword]
+  deleteKeyword(where: KeywordWhereUniqueInput!): Keyword
+  deleteKeywords(where: [KeywordWhereUniqueInput!]!): [Keyword]
   endSession: Boolean!
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
@@ -174,6 +344,12 @@ type Query {
   users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
   user(where: UserWhereUniqueInput!): User
   usersCount(where: UserWhereInput! = {}): Int
+  episodes(where: EpisodeWhereInput! = {}, orderBy: [EpisodeOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: EpisodeWhereUniqueInput): [Episode!]
+  episode(where: EpisodeWhereUniqueInput!): Episode
+  episodesCount(where: EpisodeWhereInput! = {}): Int
+  keywords(where: KeywordWhereInput! = {}, orderBy: [KeywordOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: KeywordWhereUniqueInput): [Keyword!]
+  keyword(where: KeywordWhereUniqueInput!): Keyword
+  keywordsCount(where: KeywordWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }
