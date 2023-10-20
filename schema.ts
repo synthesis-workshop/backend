@@ -88,7 +88,7 @@ export const lists: Lists = {
 
       lastUpdated: timestamp({ defaultValue: { kind: "now" } }),
 
-      fileDownload: file({ storage: "my_download_storage" })
+      fileDownload: file({ storage: "s3_file_storage" })
     }
   })
 };
