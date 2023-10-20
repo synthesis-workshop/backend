@@ -5,7 +5,7 @@
 // If you want to learn more about how lists are configured, please read
 // - https://keystonejs.com/docs/config/lists
 
-import { list } from "@keystone-6/core";
+import { list, config } from "@keystone-6/core";
 import { allowAll } from "@keystone-6/core/access";
 
 // see https://keystonejs.com/docs/fields/overview for the full list of fields
@@ -19,6 +19,7 @@ import {
   checkbox,
   select,
   image,
+  file,
 } from "@keystone-6/core/fields";
 
 // the document field is a more complicated field, so it has it's own package
@@ -76,6 +77,46 @@ export const lists: Lists = {
         // this sets the timestamp to Date.now() when the user was last active
         defaultValue: { kind: "now" },
       }),
+    },
+  }),
+
+  /* The course Model is a temporary code just for relationship to Problem Set Modal */
+  Course: list({
+    access: allowAll,
+    fields: {
+      title: text({
+        validation: { isRequired: true },
+      }),
+      body: text({
+        validation: { isRequired: true },
+        ui: { displayMode: "textarea" },
+      }),
+      problemSet: relationship({ ref: "ProblemSet", many: true }),
+    },
+  }),
+  ProblemSet: list({
+    access: {
+      operation: allowAll,
+    },
+    fields: {
+      title: text({
+        validation: { isRequired: true },
+        isFilterable: true,
+        isOrderable: true,
+      }),
+      problemSetFile: file({ storage: "s3_file_storage" }),
+      solutionFile: file({ storage: "s3_file_storage" }),
+      episodeLink: text({
+        validation: { isRequired: true },
+        defaultValue:
+          'NOTE: Enter the string of characters at the end of the YouTube URL after "v=" here.',
+      }),
+      downloadCount: integer({
+        validation: { min: 0 },
+        isOrderable: true,
+        isFilterable: true,
+      }),
+      course: relationship({ ref: "Course", many: true }),
     },
   }),
 };

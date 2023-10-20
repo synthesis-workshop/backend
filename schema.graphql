@@ -136,6 +136,167 @@ input UserCreateInput {
   lastLoginDate: DateTime
 }
 
+type Course {
+  id: ID!
+  title: String
+  body: String
+  problemSet(where: ProblemSetWhereInput! = {}, orderBy: [ProblemSetOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ProblemSetWhereUniqueInput): [ProblemSet!]
+  problemSetCount(where: ProblemSetWhereInput! = {}): Int
+}
+
+input CourseWhereUniqueInput {
+  id: ID
+}
+
+input CourseWhereInput {
+  AND: [CourseWhereInput!]
+  OR: [CourseWhereInput!]
+  NOT: [CourseWhereInput!]
+  id: IDFilter
+  title: StringFilter
+  body: StringFilter
+  problemSet: ProblemSetManyRelationFilter
+}
+
+input ProblemSetManyRelationFilter {
+  every: ProblemSetWhereInput
+  some: ProblemSetWhereInput
+  none: ProblemSetWhereInput
+}
+
+input CourseOrderByInput {
+  id: OrderDirection
+  title: OrderDirection
+  body: OrderDirection
+}
+
+input CourseUpdateInput {
+  title: String
+  body: String
+  problemSet: ProblemSetRelateToManyForUpdateInput
+}
+
+input ProblemSetRelateToManyForUpdateInput {
+  disconnect: [ProblemSetWhereUniqueInput!]
+  set: [ProblemSetWhereUniqueInput!]
+  create: [ProblemSetCreateInput!]
+  connect: [ProblemSetWhereUniqueInput!]
+}
+
+input CourseUpdateArgs {
+  where: CourseWhereUniqueInput!
+  data: CourseUpdateInput!
+}
+
+input CourseCreateInput {
+  title: String
+  body: String
+  problemSet: ProblemSetRelateToManyForCreateInput
+}
+
+input ProblemSetRelateToManyForCreateInput {
+  create: [ProblemSetCreateInput!]
+  connect: [ProblemSetWhereUniqueInput!]
+}
+
+type ProblemSet {
+  id: ID!
+  title: String
+  problemSetFile: FileFieldOutput
+  solutionFile: FileFieldOutput
+  episodeLink: String
+  downloadCount: Int
+  course(where: CourseWhereInput! = {}, orderBy: [CourseOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: CourseWhereUniqueInput): [Course!]
+  courseCount(where: CourseWhereInput! = {}): Int
+}
+
+type FileFieldOutput {
+  filename: String!
+  filesize: Int!
+  url: String!
+}
+
+input ProblemSetWhereUniqueInput {
+  id: ID
+}
+
+input ProblemSetWhereInput {
+  AND: [ProblemSetWhereInput!]
+  OR: [ProblemSetWhereInput!]
+  NOT: [ProblemSetWhereInput!]
+  id: IDFilter
+  title: StringFilter
+  episodeLink: StringFilter
+  downloadCount: IntNullableFilter
+  course: CourseManyRelationFilter
+}
+
+input IntNullableFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntNullableFilter
+}
+
+input CourseManyRelationFilter {
+  every: CourseWhereInput
+  some: CourseWhereInput
+  none: CourseWhereInput
+}
+
+input ProblemSetOrderByInput {
+  id: OrderDirection
+  title: OrderDirection
+  episodeLink: OrderDirection
+  downloadCount: OrderDirection
+}
+
+input ProblemSetUpdateInput {
+  title: String
+  problemSetFile: FileFieldInput
+  solutionFile: FileFieldInput
+  episodeLink: String
+  downloadCount: Int
+  course: CourseRelateToManyForUpdateInput
+}
+
+input FileFieldInput {
+  upload: Upload!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input CourseRelateToManyForUpdateInput {
+  disconnect: [CourseWhereUniqueInput!]
+  set: [CourseWhereUniqueInput!]
+  create: [CourseCreateInput!]
+  connect: [CourseWhereUniqueInput!]
+}
+
+input ProblemSetUpdateArgs {
+  where: ProblemSetWhereUniqueInput!
+  data: ProblemSetUpdateInput!
+}
+
+input ProblemSetCreateInput {
+  title: String
+  problemSetFile: FileFieldInput
+  solutionFile: FileFieldInput
+  episodeLink: String
+  downloadCount: Int
+  course: CourseRelateToManyForCreateInput
+}
+
+input CourseRelateToManyForCreateInput {
+  create: [CourseCreateInput!]
+  connect: [CourseWhereUniqueInput!]
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -148,6 +309,18 @@ type Mutation {
   updateUsers(data: [UserUpdateArgs!]!): [User]
   deleteUser(where: UserWhereUniqueInput!): User
   deleteUsers(where: [UserWhereUniqueInput!]!): [User]
+  createCourse(data: CourseCreateInput!): Course
+  createCourses(data: [CourseCreateInput!]!): [Course]
+  updateCourse(where: CourseWhereUniqueInput!, data: CourseUpdateInput!): Course
+  updateCourses(data: [CourseUpdateArgs!]!): [Course]
+  deleteCourse(where: CourseWhereUniqueInput!): Course
+  deleteCourses(where: [CourseWhereUniqueInput!]!): [Course]
+  createProblemSet(data: ProblemSetCreateInput!): ProblemSet
+  createProblemSets(data: [ProblemSetCreateInput!]!): [ProblemSet]
+  updateProblemSet(where: ProblemSetWhereUniqueInput!, data: ProblemSetUpdateInput!): ProblemSet
+  updateProblemSets(data: [ProblemSetUpdateArgs!]!): [ProblemSet]
+  deleteProblemSet(where: ProblemSetWhereUniqueInput!): ProblemSet
+  deleteProblemSets(where: [ProblemSetWhereUniqueInput!]!): [ProblemSet]
   endSession: Boolean!
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
@@ -174,6 +347,12 @@ type Query {
   users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
   user(where: UserWhereUniqueInput!): User
   usersCount(where: UserWhereInput! = {}): Int
+  courses(where: CourseWhereInput! = {}, orderBy: [CourseOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: CourseWhereUniqueInput): [Course!]
+  course(where: CourseWhereUniqueInput!): Course
+  coursesCount(where: CourseWhereInput! = {}): Int
+  problemSets(where: ProblemSetWhereInput! = {}, orderBy: [ProblemSetOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ProblemSetWhereUniqueInput): [ProblemSet!]
+  problemSet(where: ProblemSetWhereUniqueInput!): ProblemSet
+  problemSetsCount(where: ProblemSetWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }

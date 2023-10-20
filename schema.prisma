@@ -20,3 +20,24 @@ model User {
   createdAt     DateTime? @default(now())
   lastLoginDate DateTime? @default(now())
 }
+
+model Course {
+  id                     String       @id @default(uuid())
+  title                  String       @default("")
+  body                   String       @default("")
+  problemSet             ProblemSet[] @relation("Course_problemSet")
+  from_ProblemSet_course ProblemSet[] @relation("ProblemSet_course")
+}
+
+model ProblemSet {
+  id                      String   @id @default(uuid())
+  title                   String   @default("")
+  problemSetFile_filesize Int?
+  problemSetFile_filename String?
+  solutionFile_filesize   Int?
+  solutionFile_filename   String?
+  episodeLink             String   @default("NOTE: Enter the string of characters at the end of the YouTube URL after \"v=\" here.")
+  downloadCount           Int?
+  course                  Course[] @relation("ProblemSet_course")
+  from_Course_problemSet  Course[] @relation("Course_problemSet")
+}
