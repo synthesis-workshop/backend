@@ -143,6 +143,7 @@ type Episode {
   episodeNumber: Float
   section: String
   runtime: String
+  youtubeVideoId: String
   publishedAt: DateTime
   status: String
   keyword(where: KeywordWhereInput! = {}, orderBy: [KeywordOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: KeywordWhereUniqueInput): [Keyword!]
@@ -164,6 +165,7 @@ input EpisodeWhereInput {
   episodeNumber: FloatNullableFilter
   section: StringFilter
   runtime: StringFilter
+  youtubeVideoId: StringFilter
   publishedAt: DateTimeNullableFilter
   status: StringNullableFilter
   keyword: KeywordManyRelationFilter
@@ -193,6 +195,7 @@ input EpisodeOrderByInput {
   episodeNumber: OrderDirection
   section: OrderDirection
   runtime: OrderDirection
+  youtubeVideoId: OrderDirection
   publishedAt: OrderDirection
   status: OrderDirection
 }
@@ -203,6 +206,7 @@ input EpisodeUpdateInput {
   episodeNumber: Float
   section: String
   runtime: String
+  youtubeVideoId: String
   publishedAt: DateTime
   status: String
   keyword: KeywordRelateToManyForUpdateInput
@@ -226,6 +230,7 @@ input EpisodeCreateInput {
   episodeNumber: Float
   section: String
   runtime: String
+  youtubeVideoId: String
   publishedAt: DateTime
   status: String
   keyword: KeywordRelateToManyForCreateInput

@@ -22,15 +22,16 @@ model User {
 }
 
 model Episode {
-  id            String    @id @default(uuid())
-  title         String    @default("")
-  description   String    @default("")
-  episodeNumber Float?    @unique
-  section       String    @default("")
-  runtime       String    @default("00:00")
-  publishedAt   DateTime?
-  status        String?   @default("draft")
-  keyword       Keyword[] @relation("Episode_keyword")
+  id             String    @id @default(uuid())
+  title          String    @default("")
+  description    String    @default("")
+  episodeNumber  Float?    @unique
+  section        String    @default("")
+  runtime        String    @default("00:00")
+  youtubeVideoId String    @default("NOTE: Enter the string of characters at the end of the YouTube URL after \"v=\" here.")
+  publishedAt    DateTime?
+  status         String?   @default("draft")
+  keyword        Keyword[] @relation("Episode_keyword")
 }
 
 model Keyword {

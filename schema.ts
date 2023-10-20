@@ -20,6 +20,7 @@ import {
   select,
   image,
   float,
+  multiselect,
 } from '@keystone-6/core/fields';
 
 // the document field is a more complicated field, so it has it's own package
@@ -83,7 +84,9 @@ export const lists: Lists = {
     access: allowAll,
     fields: {
       title: text({ isFilterable: true, isOrderable: true }),
-      description: text(),
+      description: text({
+        ui: { displayMode: 'textarea' },
+      }),
       episodeNumber: float({
         validation: { min: 0 },
         isIndexed: 'unique',
@@ -91,6 +94,10 @@ export const lists: Lists = {
       }),
       section: text({ isFilterable: true, isOrderable: true }),
       runtime: text({ isOrderable: true, defaultValue: '00:00' }),
+      youtubeVideoId: text({
+        defaultValue:
+          'NOTE: Enter the string of characters at the end of the YouTube URL after "v=" here.',
+      }),
       publishedAt: timestamp({ isFilterable: true, isOrderable: true }),
       status: select({
         options: [

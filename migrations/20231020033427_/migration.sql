@@ -1,21 +1,38 @@
 -- CreateTable
+CREATE TABLE `User` (
+    `id` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL DEFAULT '',
+    `email` VARCHAR(191) NOT NULL DEFAULT '',
+    `password` VARCHAR(191) NOT NULL,
+    `status` VARCHAR(191) NULL DEFAULT 'active',
+    `createdAt` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `lastLoginDate` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    UNIQUE INDEX `User_name_key`(`name`),
+    UNIQUE INDEX `User_email_key`(`email`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Episode` (
     `id` VARCHAR(191) NOT NULL,
     `title` VARCHAR(191) NOT NULL DEFAULT '',
     `description` VARCHAR(191) NOT NULL DEFAULT '',
-    `episodeNumber` VARCHAR(191) NOT NULL DEFAULT '',
+    `episodeNumber` DOUBLE NULL,
     `section` VARCHAR(191) NOT NULL DEFAULT '',
-    `runtime` VARCHAR(191) NOT NULL DEFAULT '',
+    `runtime` VARCHAR(191) NOT NULL DEFAULT '00:00',
+    `youtubeVideoId` JSON NOT NULL,
     `publishedAt` DATETIME(3) NULL,
     `status` VARCHAR(191) NULL DEFAULT 'draft',
 
+    UNIQUE INDEX `Episode_episodeNumber_key`(`episodeNumber`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `Keyword` (
     `id` VARCHAR(191) NOT NULL,
-    `keywordList` VARCHAR(191) NOT NULL DEFAULT '',
+    `keyword` VARCHAR(191) NOT NULL DEFAULT '',
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
