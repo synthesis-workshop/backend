@@ -80,15 +80,14 @@ export const lists: Lists = {
     },
   }),
   Download: list({
-
     access: allowAll,
-    
+
     fields: {
-      title: text({ validation: { isRequired:true } }),
+      title: text({ validation: { isRequired: true } }),
 
       lastUpdated: timestamp({ defaultValue: { kind: "now" } }),
 
-      fileDownload: file({ storage: "s3_file_storage" })
-    }
-  })
+      fileDownload: file({ storage: "s3_file_storage" }),
+    },
+  }),
 };
