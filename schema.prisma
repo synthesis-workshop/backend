@@ -20,3 +20,11 @@ model User {
   createdAt     DateTime? @default(now())
   lastLoginDate DateTime? @default(now())
 }
+
+model Download {
+  id                    String    @id @default(uuid())
+  title                 String    @default("")
+  lastUpdated           DateTime? @default(now())
+  fileDownload_filesize Int?
+  fileDownload_filename String?
+}

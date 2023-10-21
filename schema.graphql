@@ -136,6 +136,62 @@ input UserCreateInput {
   lastLoginDate: DateTime
 }
 
+type Download {
+  id: ID!
+  title: String
+  lastUpdated: DateTime
+  fileDownload: FileFieldOutput
+}
+
+type FileFieldOutput {
+  filename: String!
+  filesize: Int!
+  url: String!
+}
+
+input DownloadWhereUniqueInput {
+  id: ID
+}
+
+input DownloadWhereInput {
+  AND: [DownloadWhereInput!]
+  OR: [DownloadWhereInput!]
+  NOT: [DownloadWhereInput!]
+  id: IDFilter
+  title: StringFilter
+  lastUpdated: DateTimeNullableFilter
+}
+
+input DownloadOrderByInput {
+  id: OrderDirection
+  title: OrderDirection
+  lastUpdated: OrderDirection
+}
+
+input DownloadUpdateInput {
+  title: String
+  lastUpdated: DateTime
+  fileDownload: FileFieldInput
+}
+
+input FileFieldInput {
+  upload: Upload!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input DownloadUpdateArgs {
+  where: DownloadWhereUniqueInput!
+  data: DownloadUpdateInput!
+}
+
+input DownloadCreateInput {
+  title: String
+  lastUpdated: DateTime
+  fileDownload: FileFieldInput
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -148,6 +204,12 @@ type Mutation {
   updateUsers(data: [UserUpdateArgs!]!): [User]
   deleteUser(where: UserWhereUniqueInput!): User
   deleteUsers(where: [UserWhereUniqueInput!]!): [User]
+  createDownload(data: DownloadCreateInput!): Download
+  createDownloads(data: [DownloadCreateInput!]!): [Download]
+  updateDownload(where: DownloadWhereUniqueInput!, data: DownloadUpdateInput!): Download
+  updateDownloads(data: [DownloadUpdateArgs!]!): [Download]
+  deleteDownload(where: DownloadWhereUniqueInput!): Download
+  deleteDownloads(where: [DownloadWhereUniqueInput!]!): [Download]
   endSession: Boolean!
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
@@ -174,6 +236,9 @@ type Query {
   users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
   user(where: UserWhereUniqueInput!): User
   usersCount(where: UserWhereInput! = {}): Int
+  downloads(where: DownloadWhereInput! = {}, orderBy: [DownloadOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: DownloadWhereUniqueInput): [Download!]
+  download(where: DownloadWhereUniqueInput!): Download
+  downloadsCount(where: DownloadWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }
