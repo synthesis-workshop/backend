@@ -20,3 +20,21 @@ model User {
   createdAt     DateTime? @default(now())
   lastLoginDate DateTime? @default(now())
 }
+
+model Poster {
+  id     String @id @default(uuid())
+  title  String @default("")
+  author String @default("")
+  image  Image? @relation("Image_poster")
+}
+
+model Image {
+  id             String  @id @default(uuid())
+  file_filesize  Int?
+  file_extension String?
+  file_width     Int?
+  file_height    Int?
+  file_id        String?
+  poster         Poster? @relation("Image_poster", fields: [posterId], references: [id])
+  posterId       String? @unique @map("poster")
+}

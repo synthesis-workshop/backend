@@ -1,18 +1,10 @@
-// keystone.ts
-
 import dotenv from "dotenv";
 import { config } from "@keystone-6/core";
-import { withAuth, session } from "./auth";
-import { lists } from "./schema";
 
 dotenv.config();
 
-const {
-  S3_BUCKET_NAME: bucketName = "keystone-test",
-  S3_REGION: region = "ap-southeast-2",
-  S3_ACCESS_KEY_ID: accessKeyId = "keystone",
-  S3_SECRET_ACCESS_KEY: secretAccessKey = "keystone",
-} = process.env;
+import { lists } from "./schema";
+import { withAuth, session } from "./auth";
 
 export default withAuth(
   config({
@@ -38,16 +30,28 @@ export default withAuth(
       },
     },
     storage: {
-      my_s3_files: {
+      s3_file_storage: {
         kind: "s3",
         type: "file",
-        bucketName,
-        region,
-        accessKeyId,
-        secretAccessKey,
+        bucketName: process.env.S3_BUCKET_NAME || "slop-keystonejs",
+        region: process.env.S3_REGION || "us-east-2",
+        accessKeyId: process.env.S3_ACCESS_KEY_ID || "keystone",
+        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || "keystone",
+        signed: { expiry: 5000 },
+        forcePathStyle: true,
+      },
+      s3_image_storage: {
+        kind: "s3",
+        type: "image",
+        bucketName: process.env.S3_BUCKET_NAME || "slop-keystonejs",
+        region: process.env.S3_REGION || "us-east-2",
+        accessKeyId: process.env.S3_ACCESS_KEY_ID || "keystone",
+        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || "keystone",
+        signed: { expiry: 5000 },
+        forcePathStyle: true,
       },
     },
     lists,
     session,
-  }),
+  })
 );
