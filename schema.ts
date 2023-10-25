@@ -19,6 +19,8 @@ import {
   checkbox,
   select,
   image,
+  decimal,
+  enumeration,
 } from "@keystone-6/core/fields";
 
 // the document field is a more complicated field, so it has it's own package
@@ -75,6 +77,34 @@ export const lists: Lists = {
       lastLoginDate: timestamp({
         // this sets the timestamp to Date.now() when the user was last active
         defaultValue: { kind: "now" },
+      }),
+    },
+  }),
+  Publication: list({
+    access: allowAll,
+    fields: {
+      keyword: text({ validation: { isRequired: true } }),
+      title: text({ validation: { isRequired: true } }),
+      text: text({ validation: { isRequired: true } }),
+      date: text({ validation: { isRequired: true } }),
+      source: text({ validation: { isRequired: true } }),
+      link: text({
+        validation: { isRequired: true },
+        isUrl: true,
+      }),
+      image: text({
+        validation: { isRequired: true },
+        isUrl: true,
+      }),
+      owner: relationship({
+        ref: "User.publications",
+        many: false,
+      }),
+      pageCount: integer(),
+      isPublished: checkbox(),
+      rating: integer(),
+      tags: enumeration({
+        options: "tag1,tag2,tag3",
       }),
     },
   }),
