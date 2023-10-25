@@ -28,7 +28,7 @@ model Episode {
   episodeNumber  Float?    @unique
   section        String    @default("")
   runtime        String    @default("00:00")
-  youtubeVideoId String    @default("NOTE: Enter the string of characters at the end of the YouTube URL after \"v=\" here.")
+  youtubeVideoId String    @default("")
   publishedAt    DateTime?
   status         String?   @default("draft")
   keyword        Keyword[] @relation("Episode_keyword")
