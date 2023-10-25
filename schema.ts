@@ -20,7 +20,7 @@ import {
   select,
   image,
   decimal,
-  enumeration,
+  // enumeration,
 } from "@keystone-6/core/fields";
 
 // the document field is a more complicated field, so it has it's own package
@@ -30,6 +30,8 @@ import { document } from "@keystone-6/fields-document";
 // when using Typescript, you can refine your types to a stricter subset by importing
 // the generated types from '.keystone/types'
 import type { Lists } from ".keystone/types";
+
+import { Publication } from "./models/publications";
 
 export const lists: Lists = {
   User: list({
@@ -78,34 +80,12 @@ export const lists: Lists = {
         // this sets the timestamp to Date.now() when the user was last active
         defaultValue: { kind: "now" },
       }),
-    },
-  }),
-  Publication: list({
-    access: allowAll,
-    fields: {
-      keyword: text({ validation: { isRequired: true } }),
-      title: text({ validation: { isRequired: true } }),
-      text: text({ validation: { isRequired: true } }),
-      date: text({ validation: { isRequired: true } }),
-      source: text({ validation: { isRequired: true } }),
-      link: text({
-        validation: { isRequired: true },
-        isUrl: true,
-      }),
-      image: text({
-        validation: { isRequired: true },
-        isUrl: true,
-      }),
-      owner: relationship({
+
+      publications: relationship({
         ref: "User.publications",
-        many: false,
-      }),
-      pageCount: integer(),
-      isPublished: checkbox(),
-      rating: integer(),
-      tags: enumeration({
-        options: "tag1,tag2,tag3",
+        many: true,
       }),
     },
   }),
+  Publication,
 };

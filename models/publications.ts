@@ -1,26 +1,26 @@
 import { list } from "@keystone-6/core";
-import { text, timestamp, relationship } from "@keystone-6/fields";
+import { allowAll } from "@keystone-6/core/access";
+import { text, timestamp, relationship } from "@keystone-6/core/fields";
 
-export const lists = {
-  Publication: list({
-    fields: {
-      keyword: text({ isRequired: true }),
-      title: text({ isRequired: true }),
-      text: text({ isRequired: true }),
-      date: text({ isRequired: true }),
-      source: text({ isRequired: true }),
-      link: text({
-        isRequired: true,
-        isUrl: true, // Validate as a URL
-      }),
-      image: text({
-        isRequired: true,
-        isUrl: true, // Validate as a URL
-      }),
-      owner: relationship({
-        ref: "User.publications",
-        many: false,
-      }),
-    },
-  }),
-};
+export const Publication = list({
+  access: allowAll,
+  fields: {
+    keyword: text({ validation: { isRequired: true } }),
+    title: text({ validation: { isRequired: true } }),
+    text: text({ validation: { isRequired: true } }),
+    date: text({ validation: { isRequired: true } }),
+    source: text({ validation: { isRequired: true } }),
+    link: text({
+      validation: { isRequired: true },
+      isUrl: true,
+    }),
+    image: text({
+      validation: { isRequired: true },
+      isUrl: true, // Validate as a URL
+    }),
+    owner: relationship({
+      ref: "User.publications",
+      many: false,
+    }),
+  },
+});
