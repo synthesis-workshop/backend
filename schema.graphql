@@ -136,6 +136,46 @@ input UserCreateInput {
   lastLoginDate: DateTime
 }
 
+type AboutUsSection {
+  id: ID!
+  aboutUs: String
+  ourMission: String
+}
+
+input AboutUsSectionWhereUniqueInput {
+  id: ID
+}
+
+input AboutUsSectionWhereInput {
+  AND: [AboutUsSectionWhereInput!]
+  OR: [AboutUsSectionWhereInput!]
+  NOT: [AboutUsSectionWhereInput!]
+  id: IDFilter
+  aboutUs: StringFilter
+  ourMission: StringFilter
+}
+
+input AboutUsSectionOrderByInput {
+  id: OrderDirection
+  aboutUs: OrderDirection
+  ourMission: OrderDirection
+}
+
+input AboutUsSectionUpdateInput {
+  aboutUs: String
+  ourMission: String
+}
+
+input AboutUsSectionUpdateArgs {
+  where: AboutUsSectionWhereUniqueInput! = {id: 1}
+  data: AboutUsSectionUpdateInput!
+}
+
+input AboutUsSectionCreateInput {
+  aboutUs: String
+  ourMission: String
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -148,6 +188,12 @@ type Mutation {
   updateUsers(data: [UserUpdateArgs!]!): [User]
   deleteUser(where: UserWhereUniqueInput!): User
   deleteUsers(where: [UserWhereUniqueInput!]!): [User]
+  createAboutUsSection(data: AboutUsSectionCreateInput!): AboutUsSection
+  createAboutUsSections(data: [AboutUsSectionCreateInput!]!): [AboutUsSection]
+  updateAboutUsSection(where: AboutUsSectionWhereUniqueInput! = {id: 1}, data: AboutUsSectionUpdateInput!): AboutUsSection
+  updateAboutUsSections(data: [AboutUsSectionUpdateArgs!]!): [AboutUsSection]
+  deleteAboutUsSection(where: AboutUsSectionWhereUniqueInput! = {id: 1}): AboutUsSection
+  deleteAboutUsSections(where: [AboutUsSectionWhereUniqueInput!]!): [AboutUsSection]
   endSession: Boolean!
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
@@ -174,6 +220,9 @@ type Query {
   users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
   user(where: UserWhereUniqueInput!): User
   usersCount(where: UserWhereInput! = {}): Int
+  aboutUsSections(where: AboutUsSectionWhereInput! = {id: {equals: 1}}, orderBy: [AboutUsSectionOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: AboutUsSectionWhereUniqueInput): [AboutUsSection!]
+  aboutUsSection(where: AboutUsSectionWhereUniqueInput! = {id: 1}): AboutUsSection
+  aboutUsSectionsCount(where: AboutUsSectionWhereInput! = {id: {equals: 1}}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }

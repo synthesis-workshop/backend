@@ -20,3 +20,9 @@ model User {
   createdAt     DateTime? @default(now())
   lastLoginDate DateTime? @default(now())
 }
+
+model AboutUsSection {
+  id         Int    @id
+  aboutUs    String @default("")
+  ourMission String @default("")
+}
