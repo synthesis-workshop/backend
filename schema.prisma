@@ -11,11 +11,79 @@ generator client {
   provider = "prisma-client-js"
 }
 
+model Course {
+  id          String       @id @default(uuid())
+  title       String       @default("")
+  description Json         @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  problemSets ProblemSet[] @relation("Course_problemSets")
+  episodes    Episode[]    @relation("Course_episodes")
+}
+
+model Download {
+  id                    String    @id @default(uuid())
+  title                 String    @default("")
+  lastUpdated           DateTime? @default(now())
+  fileDownload_filesize Int?
+  fileDownload_filename String?
+}
+
+model Episode {
+  id                           String       @id @default(uuid())
+  title                        String       @default("")
+  description                  Json         @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  episodeNumber                Float        @unique
+  category                     String       @default("")
+  runtime                      String       @default("00:00")
+  youtubeVideoId               String       @default("")
+  publishedAt                  DateTime?    @default(now())
+  status                       String       @default("draft")
+  relatedEpisodes              Episode[]    @relation("Episode_relatedEpisodes")
+  keywords                     Keyword[]    @relation("Episode_keywords")
+  problemSets                  ProblemSet[] @relation("ProblemSet_episode")
+  courses                      Course[]     @relation("Course_episodes")
+  from_Episode_relatedEpisodes Episode[]    @relation("Episode_relatedEpisodes")
+}
+
+model Keyword {
+  id       String    @id @default(uuid())
+  name     String    @default("")
+  episodes Episode[] @relation("Episode_keywords")
+}
+
+model Poster {
+  id              String  @id @default(uuid())
+  title           String  @default("")
+  attribution     String  @default("")
+  image_filesize  Int?
+  image_extension String?
+  image_width     Int?
+  image_height    Int?
+  image_id        String?
+  file_filesize   Int?
+  file_filename   String?
+}
+
+model ProblemSet {
+  id                      String   @id @default(uuid())
+  title                   String   @default("")
+  problemSetFile_filesize Int?
+  problemSetFile_filename String?
+  solutionFile_filesize   Int?
+  solutionFile_filename   String?
+  downloadCount           Int?
+  episode                 Episode? @relation("ProblemSet_episode", fields: [episodeId], references: [id])
+  episodeId               String?  @map("episode")
+  courses                 Course[] @relation("Course_problemSets")
+
+  @@index([episodeId])
+}
+
 model User {
   id            String    @id @default(uuid())
-  name          String    @unique @default("")
+  name          String    @default("")
   email         String    @unique @default("")
   password      String
+  isAdmin       Boolean   @default(true)
   status        String?   @default("active")
   createdAt     DateTime? @default(now())
   lastLoginDate DateTime? @default(now())
