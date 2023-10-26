@@ -50,6 +50,19 @@ model Keyword {
   episodes Episode[] @relation("Episode_keywords")
 }
 
+model Poster {
+  id              String  @id @default(uuid())
+  title           String  @default("")
+  attribution     String  @default("")
+  image_filesize  Int?
+  image_extension String?
+  image_width     Int?
+  image_height    Int?
+  image_id        String?
+  file_filesize   Int?
+  file_filename   String?
+}
+
 model ProblemSet {
   id                      String   @id @default(uuid())
   title                   String   @default("")
@@ -74,22 +87,4 @@ model User {
   status        String?   @default("active")
   createdAt     DateTime? @default(now())
   lastLoginDate DateTime? @default(now())
-}
-
-model Poster {
-  id     String @id @default(uuid())
-  title  String @default("")
-  author String @default("")
-  image  Image? @relation("Image_poster")
-}
-
-model Image {
-  id             String  @id @default(uuid())
-  file_filesize  Int?
-  file_extension String?
-  file_width     Int?
-  file_height    Int?
-  file_id        String?
-  poster         Poster? @relation("Image_poster", fields: [posterId], references: [id])
-  posterId       String? @unique @map("poster")
 }

@@ -382,6 +382,72 @@ input KeywordCreateInput {
   episodes: EpisodeRelateToManyForCreateInput
 }
 
+type Poster {
+  id: ID!
+  title: String
+  attribution: String
+  image: ImageFieldOutput
+  file: FileFieldOutput
+}
+
+type ImageFieldOutput {
+  id: ID!
+  filesize: Int!
+  width: Int!
+  height: Int!
+  extension: ImageExtension!
+  url: String!
+}
+
+enum ImageExtension {
+  jpg
+  png
+  webp
+  gif
+}
+
+input PosterWhereUniqueInput {
+  id: ID
+}
+
+input PosterWhereInput {
+  AND: [PosterWhereInput!]
+  OR: [PosterWhereInput!]
+  NOT: [PosterWhereInput!]
+  id: IDFilter
+  title: StringFilter
+  attribution: StringFilter
+}
+
+input PosterOrderByInput {
+  id: OrderDirection
+  title: OrderDirection
+  attribution: OrderDirection
+}
+
+input PosterUpdateInput {
+  title: String
+  attribution: String
+  image: ImageFieldInput
+  file: FileFieldInput
+}
+
+input ImageFieldInput {
+  upload: Upload!
+}
+
+input PosterUpdateArgs {
+  where: PosterWhereUniqueInput!
+  data: PosterUpdateInput!
+}
+
+input PosterCreateInput {
+  title: String
+  attribution: String
+  image: ImageFieldInput
+  file: FileFieldInput
+}
+
 type ProblemSet {
   id: ID!
   title: String
@@ -546,132 +612,6 @@ input UserCreateInput {
   lastLoginDate: DateTime
 }
 
-type Poster {
-  id: ID!
-  title: String
-  author: String
-  image: Image
-}
-
-input PosterWhereUniqueInput {
-  id: ID
-}
-
-input PosterWhereInput {
-  AND: [PosterWhereInput!]
-  OR: [PosterWhereInput!]
-  NOT: [PosterWhereInput!]
-  id: IDFilter
-  title: StringFilter
-  author: StringFilter
-  image: ImageWhereInput
-}
-
-input PosterOrderByInput {
-  id: OrderDirection
-  title: OrderDirection
-  author: OrderDirection
-}
-
-input PosterUpdateInput {
-  title: String
-  author: String
-  image: ImageRelateToOneForUpdateInput
-}
-
-input ImageRelateToOneForUpdateInput {
-  create: ImageCreateInput
-  connect: ImageWhereUniqueInput
-  disconnect: Boolean
-}
-
-input PosterUpdateArgs {
-  where: PosterWhereUniqueInput!
-  data: PosterUpdateInput!
-}
-
-input PosterCreateInput {
-  title: String
-  author: String
-  image: ImageRelateToOneForCreateInput
-}
-
-input ImageRelateToOneForCreateInput {
-  create: ImageCreateInput
-  connect: ImageWhereUniqueInput
-}
-
-type Image {
-  id: ID!
-  file: ImageFieldOutput
-  poster: Poster
-}
-
-type ImageFieldOutput {
-  id: ID!
-  filesize: Int!
-  width: Int!
-  height: Int!
-  extension: ImageExtension!
-  url: String!
-}
-
-enum ImageExtension {
-  jpg
-  png
-  webp
-  gif
-}
-
-input ImageWhereUniqueInput {
-  id: ID
-}
-
-input ImageWhereInput {
-  AND: [ImageWhereInput!]
-  OR: [ImageWhereInput!]
-  NOT: [ImageWhereInput!]
-  id: IDFilter
-  poster: PosterWhereInput
-}
-
-input ImageOrderByInput {
-  id: OrderDirection
-}
-
-input ImageUpdateInput {
-  file: ImageFieldInput
-  poster: PosterRelateToOneForUpdateInput
-}
-
-input ImageFieldInput {
-  upload: Upload!
-}
-
-"""The `Upload` scalar type represents a file upload."""
-scalar Upload
-
-input PosterRelateToOneForUpdateInput {
-  create: PosterCreateInput
-  connect: PosterWhereUniqueInput
-  disconnect: Boolean
-}
-
-input ImageUpdateArgs {
-  where: ImageWhereUniqueInput!
-  data: ImageUpdateInput!
-}
-
-input ImageCreateInput {
-  file: ImageFieldInput
-  poster: PosterRelateToOneForCreateInput
-}
-
-input PosterRelateToOneForCreateInput {
-  create: PosterCreateInput
-  connect: PosterWhereUniqueInput
-}
-
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -702,6 +642,12 @@ type Mutation {
   updateKeywords(data: [KeywordUpdateArgs!]!): [Keyword]
   deleteKeyword(where: KeywordWhereUniqueInput!): Keyword
   deleteKeywords(where: [KeywordWhereUniqueInput!]!): [Keyword]
+  createPoster(data: PosterCreateInput!): Poster
+  createPosters(data: [PosterCreateInput!]!): [Poster]
+  updatePoster(where: PosterWhereUniqueInput!, data: PosterUpdateInput!): Poster
+  updatePosters(data: [PosterUpdateArgs!]!): [Poster]
+  deletePoster(where: PosterWhereUniqueInput!): Poster
+  deletePosters(where: [PosterWhereUniqueInput!]!): [Poster]
   createProblemSet(data: ProblemSetCreateInput!): ProblemSet
   createProblemSets(data: [ProblemSetCreateInput!]!): [ProblemSet]
   updateProblemSet(where: ProblemSetWhereUniqueInput!, data: ProblemSetUpdateInput!): ProblemSet
@@ -714,18 +660,6 @@ type Mutation {
   updateUsers(data: [UserUpdateArgs!]!): [User]
   deleteUser(where: UserWhereUniqueInput!): User
   deleteUsers(where: [UserWhereUniqueInput!]!): [User]
-  createPoster(data: PosterCreateInput!): Poster
-  createPosters(data: [PosterCreateInput!]!): [Poster]
-  updatePoster(where: PosterWhereUniqueInput!, data: PosterUpdateInput!): Poster
-  updatePosters(data: [PosterUpdateArgs!]!): [Poster]
-  deletePoster(where: PosterWhereUniqueInput!): Poster
-  deletePosters(where: [PosterWhereUniqueInput!]!): [Poster]
-  createImage(data: ImageCreateInput!): Image
-  createImages(data: [ImageCreateInput!]!): [Image]
-  updateImage(where: ImageWhereUniqueInput!, data: ImageUpdateInput!): Image
-  updateImages(data: [ImageUpdateArgs!]!): [Image]
-  deleteImage(where: ImageWhereUniqueInput!): Image
-  deleteImages(where: [ImageWhereUniqueInput!]!): [Image]
   endSession: Boolean!
   authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
@@ -761,18 +695,15 @@ type Query {
   keywords(where: KeywordWhereInput! = {}, orderBy: [KeywordOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: KeywordWhereUniqueInput): [Keyword!]
   keyword(where: KeywordWhereUniqueInput!): Keyword
   keywordsCount(where: KeywordWhereInput! = {}): Int
+  posters(where: PosterWhereInput! = {}, orderBy: [PosterOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PosterWhereUniqueInput): [Poster!]
+  poster(where: PosterWhereUniqueInput!): Poster
+  postersCount(where: PosterWhereInput! = {}): Int
   problemSets(where: ProblemSetWhereInput! = {}, orderBy: [ProblemSetOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ProblemSetWhereUniqueInput): [ProblemSet!]
   problemSet(where: ProblemSetWhereUniqueInput!): ProblemSet
   problemSetsCount(where: ProblemSetWhereInput! = {}): Int
   users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
   user(where: UserWhereUniqueInput!): User
   usersCount(where: UserWhereInput! = {}): Int
-  posters(where: PosterWhereInput! = {}, orderBy: [PosterOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PosterWhereUniqueInput): [Poster!]
-  poster(where: PosterWhereUniqueInput!): Poster
-  postersCount(where: PosterWhereInput! = {}): Int
-  images(where: ImageWhereInput! = {}, orderBy: [ImageOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ImageWhereUniqueInput): [Image!]
-  image(where: ImageWhereUniqueInput!): Image
-  imagesCount(where: ImageWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
 }
