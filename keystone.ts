@@ -30,7 +30,7 @@ export default withAuth(
       s3_file_storage: {
         kind: "s3",
         type: "file",
-        bucketName: process.env.S3_BUCKET_NAME || "slop-keystonejs",
+        bucketName: process.env.S3_BUCKET_NAME || "synth-workshop-keystonejs",
         region: process.env.S3_REGION || "us-east-2",
         accessKeyId: process.env.S3_ACCESS_KEY_ID || "keystone",
         secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || "keystone",
@@ -40,7 +40,7 @@ export default withAuth(
       s3_image_storage: {
         kind: "s3",
         type: "image",
-        bucketName: process.env.S3_BUCKET_NAME || "slop-keystonejs",
+        bucketName: process.env.S3_BUCKET_NAME || "synth-workshop-keystonejs",
         region: process.env.S3_REGION || "us-east-2",
         accessKeyId: process.env.S3_ACCESS_KEY_ID || "keystone",
         secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || "keystone",
