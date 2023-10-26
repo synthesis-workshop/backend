@@ -133,6 +133,75 @@ input EpisodeRelateToManyForCreateInput {
   connect: [EpisodeWhereUniqueInput!]
 }
 
+type Download {
+  id: ID!
+  title: String
+  lastUpdated: DateTime
+  fileDownload: FileFieldOutput
+}
+
+scalar DateTime @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
+
+type FileFieldOutput {
+  filename: String!
+  filesize: Int!
+  url: String!
+}
+
+input DownloadWhereUniqueInput {
+  id: ID
+}
+
+input DownloadWhereInput {
+  AND: [DownloadWhereInput!]
+  OR: [DownloadWhereInput!]
+  NOT: [DownloadWhereInput!]
+  id: IDFilter
+  title: StringFilter
+  lastUpdated: DateTimeNullableFilter
+}
+
+input DateTimeNullableFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: DateTimeNullableFilter
+}
+
+input DownloadOrderByInput {
+  id: OrderDirection
+  title: OrderDirection
+  lastUpdated: OrderDirection
+}
+
+input DownloadUpdateInput {
+  title: String
+  lastUpdated: DateTime
+  fileDownload: FileFieldInput
+}
+
+input FileFieldInput {
+  upload: Upload!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input DownloadUpdateArgs {
+  where: DownloadWhereUniqueInput!
+  data: DownloadUpdateInput!
+}
+
+input DownloadCreateInput {
+  title: String
+  lastUpdated: DateTime
+  fileDownload: FileFieldInput
+}
+
 type Episode {
   id: ID!
   title: String
@@ -156,8 +225,6 @@ type Episode {
 type Episode_description_Document {
   document(hydrateRelationships: Boolean! = false): JSON!
 }
-
-scalar DateTime @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
 
 input EpisodeWhereUniqueInput {
   id: ID
@@ -191,17 +258,6 @@ input FloatFilter {
   gt: Float
   gte: Float
   not: FloatFilter
-}
-
-input DateTimeNullableFilter {
-  equals: DateTime
-  in: [DateTime!]
-  notIn: [DateTime!]
-  lt: DateTime
-  lte: DateTime
-  gt: DateTime
-  gte: DateTime
-  not: DateTimeNullableFilter
 }
 
 input KeywordManyRelationFilter {
@@ -337,12 +393,6 @@ type ProblemSet {
   coursesCount(where: CourseWhereInput! = {}): Int
 }
 
-type FileFieldOutput {
-  filename: String!
-  filesize: Int!
-  url: String!
-}
-
 input ProblemSetWhereUniqueInput {
   id: ID
 }
@@ -383,13 +433,6 @@ input ProblemSetUpdateInput {
   episode: EpisodeRelateToOneForUpdateInput
   courses: CourseRelateToManyForUpdateInput
 }
-
-input FileFieldInput {
-  upload: Upload!
-}
-
-"""The `Upload` scalar type represents a file upload."""
-scalar Upload
 
 input EpisodeRelateToOneForUpdateInput {
   create: EpisodeCreateInput
@@ -515,6 +558,12 @@ type Mutation {
   updateCourses(data: [CourseUpdateArgs!]!): [Course]
   deleteCourse(where: CourseWhereUniqueInput!): Course
   deleteCourses(where: [CourseWhereUniqueInput!]!): [Course]
+  createDownload(data: DownloadCreateInput!): Download
+  createDownloads(data: [DownloadCreateInput!]!): [Download]
+  updateDownload(where: DownloadWhereUniqueInput!, data: DownloadUpdateInput!): Download
+  updateDownloads(data: [DownloadUpdateArgs!]!): [Download]
+  deleteDownload(where: DownloadWhereUniqueInput!): Download
+  deleteDownloads(where: [DownloadWhereUniqueInput!]!): [Download]
   createEpisode(data: EpisodeCreateInput!): Episode
   createEpisodes(data: [EpisodeCreateInput!]!): [Episode]
   updateEpisode(where: EpisodeWhereUniqueInput!, data: EpisodeUpdateInput!): Episode
@@ -565,6 +614,9 @@ type Query {
   courses(where: CourseWhereInput! = {}, orderBy: [CourseOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: CourseWhereUniqueInput): [Course!]
   course(where: CourseWhereUniqueInput!): Course
   coursesCount(where: CourseWhereInput! = {}): Int
+  downloads(where: DownloadWhereInput! = {}, orderBy: [DownloadOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: DownloadWhereUniqueInput): [Download!]
+  download(where: DownloadWhereUniqueInput!): Download
+  downloadsCount(where: DownloadWhereInput! = {}): Int
   episodes(where: EpisodeWhereInput! = {}, orderBy: [EpisodeOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: EpisodeWhereUniqueInput): [Episode!]
   episode(where: EpisodeWhereUniqueInput!): Episode
   episodesCount(where: EpisodeWhereInput! = {}): Int

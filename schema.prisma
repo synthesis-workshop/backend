@@ -19,6 +19,14 @@ model Course {
   episodes    Episode[]    @relation("Course_episodes")
 }
 
+model Download {
+  id                    String    @id @default(uuid())
+  title                 String    @default("")
+  lastUpdated           DateTime? @default(now())
+  fileDownload_filesize Int?
+  fileDownload_filename String?
+}
+
 model Episode {
   id                           String       @id @default(uuid())
   title                        String       @default("")
