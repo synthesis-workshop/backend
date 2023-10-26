@@ -6,6 +6,7 @@ type User {
   name: String
   email: String
   password: PasswordState
+  isAdmin: Boolean
   status: String
   createdAt: DateTime
   lastLoginDate: DateTime
@@ -19,7 +20,6 @@ scalar DateTime @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339
 
 input UserWhereUniqueInput {
   id: ID
-  name: String
   email: String
 }
 
@@ -30,6 +30,7 @@ input UserWhereInput {
   id: IDFilter
   name: StringFilter
   email: StringFilter
+  isAdmin: BooleanFilter
   status: StringNullableFilter
   createdAt: DateTimeNullableFilter
   lastLoginDate: DateTimeNullableFilter
@@ -74,6 +75,11 @@ input NestedStringFilter {
   not: NestedStringFilter
 }
 
+input BooleanFilter {
+  equals: Boolean
+  not: BooleanFilter
+}
+
 input StringNullableFilter {
   equals: String
   in: [String!]
@@ -103,6 +109,7 @@ input UserOrderByInput {
   id: OrderDirection
   name: OrderDirection
   email: OrderDirection
+  isAdmin: OrderDirection
   status: OrderDirection
   createdAt: OrderDirection
   lastLoginDate: OrderDirection
@@ -117,6 +124,7 @@ input UserUpdateInput {
   name: String
   email: String
   password: String
+  isAdmin: Boolean
   status: String
   createdAt: DateTime
   lastLoginDate: DateTime
@@ -131,6 +139,7 @@ input UserCreateInput {
   name: String
   email: String
   password: String
+  isAdmin: Boolean
   status: String
   createdAt: DateTime
   lastLoginDate: DateTime
@@ -139,15 +148,21 @@ input UserCreateInput {
 type Episode {
   id: ID!
   title: String
-  description: String
+  description: Episode_description_Document
   episodeNumber: Float
-  section: String
+  category: String
   runtime: String
   youtubeVideoId: String
   publishedAt: DateTime
   status: String
-  keyword(where: KeywordWhereInput! = {}, orderBy: [KeywordOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: KeywordWhereUniqueInput): [Keyword!]
-  keywordCount(where: KeywordWhereInput! = {}): Int
+  relatedEpisodes(where: EpisodeWhereInput! = {}, orderBy: [EpisodeOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: EpisodeWhereUniqueInput): [Episode!]
+  relatedEpisodesCount(where: EpisodeWhereInput! = {}): Int
+  keywords(where: KeywordWhereInput! = {}, orderBy: [KeywordOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: KeywordWhereUniqueInput): [Keyword!]
+  keywordsCount(where: KeywordWhereInput! = {}): Int
+}
+
+type Episode_description_Document {
+  document(hydrateRelationships: Boolean! = false): JSON!
 }
 
 input EpisodeWhereUniqueInput {
@@ -161,17 +176,17 @@ input EpisodeWhereInput {
   NOT: [EpisodeWhereInput!]
   id: IDFilter
   title: StringFilter
-  description: StringFilter
-  episodeNumber: FloatNullableFilter
-  section: StringFilter
+  episodeNumber: FloatFilter
+  category: StringFilter
   runtime: StringFilter
   youtubeVideoId: StringFilter
   publishedAt: DateTimeNullableFilter
-  status: StringNullableFilter
-  keyword: KeywordManyRelationFilter
+  status: StringFilter
+  relatedEpisodes: EpisodeManyRelationFilter
+  keywords: KeywordManyRelationFilter
 }
 
-input FloatNullableFilter {
+input FloatFilter {
   equals: Float
   in: [Float!]
   notIn: [Float!]
@@ -179,7 +194,13 @@ input FloatNullableFilter {
   lte: Float
   gt: Float
   gte: Float
-  not: FloatNullableFilter
+  not: FloatFilter
+}
+
+input EpisodeManyRelationFilter {
+  every: EpisodeWhereInput
+  some: EpisodeWhereInput
+  none: EpisodeWhereInput
 }
 
 input KeywordManyRelationFilter {
@@ -191,9 +212,8 @@ input KeywordManyRelationFilter {
 input EpisodeOrderByInput {
   id: OrderDirection
   title: OrderDirection
-  description: OrderDirection
   episodeNumber: OrderDirection
-  section: OrderDirection
+  category: OrderDirection
   runtime: OrderDirection
   youtubeVideoId: OrderDirection
   publishedAt: OrderDirection
@@ -202,14 +222,22 @@ input EpisodeOrderByInput {
 
 input EpisodeUpdateInput {
   title: String
-  description: String
+  description: JSON
   episodeNumber: Float
-  section: String
+  category: String
   runtime: String
   youtubeVideoId: String
   publishedAt: DateTime
   status: String
-  keyword: KeywordRelateToManyForUpdateInput
+  relatedEpisodes: EpisodeRelateToManyForUpdateInput
+  keywords: KeywordRelateToManyForUpdateInput
+}
+
+input EpisodeRelateToManyForUpdateInput {
+  disconnect: [EpisodeWhereUniqueInput!]
+  set: [EpisodeWhereUniqueInput!]
+  create: [EpisodeCreateInput!]
+  connect: [EpisodeWhereUniqueInput!]
 }
 
 input KeywordRelateToManyForUpdateInput {
@@ -226,14 +254,20 @@ input EpisodeUpdateArgs {
 
 input EpisodeCreateInput {
   title: String
-  description: String
+  description: JSON
   episodeNumber: Float
-  section: String
+  category: String
   runtime: String
   youtubeVideoId: String
   publishedAt: DateTime
   status: String
-  keyword: KeywordRelateToManyForCreateInput
+  relatedEpisodes: EpisodeRelateToManyForCreateInput
+  keywords: KeywordRelateToManyForCreateInput
+}
+
+input EpisodeRelateToManyForCreateInput {
+  create: [EpisodeCreateInput!]
+  connect: [EpisodeWhereUniqueInput!]
 }
 
 input KeywordRelateToManyForCreateInput {
@@ -243,9 +277,9 @@ input KeywordRelateToManyForCreateInput {
 
 type Keyword {
   id: ID!
-  keyword: String
-  keywordRelation(where: EpisodeWhereInput! = {}, orderBy: [EpisodeOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: EpisodeWhereUniqueInput): [Episode!]
-  keywordRelationCount(where: EpisodeWhereInput! = {}): Int
+  name: String
+  episodes(where: EpisodeWhereInput! = {}, orderBy: [EpisodeOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: EpisodeWhereUniqueInput): [Episode!]
+  episodesCount(where: EpisodeWhereInput! = {}): Int
 }
 
 input KeywordWhereUniqueInput {
@@ -257,31 +291,18 @@ input KeywordWhereInput {
   OR: [KeywordWhereInput!]
   NOT: [KeywordWhereInput!]
   id: IDFilter
-  keyword: StringFilter
-  keywordRelation: EpisodeManyRelationFilter
-}
-
-input EpisodeManyRelationFilter {
-  every: EpisodeWhereInput
-  some: EpisodeWhereInput
-  none: EpisodeWhereInput
+  name: StringFilter
+  episodes: EpisodeManyRelationFilter
 }
 
 input KeywordOrderByInput {
   id: OrderDirection
-  keyword: OrderDirection
+  name: OrderDirection
 }
 
 input KeywordUpdateInput {
-  keyword: String
-  keywordRelation: EpisodeRelateToManyForUpdateInput
-}
-
-input EpisodeRelateToManyForUpdateInput {
-  disconnect: [EpisodeWhereUniqueInput!]
-  set: [EpisodeWhereUniqueInput!]
-  create: [EpisodeCreateInput!]
-  connect: [EpisodeWhereUniqueInput!]
+  name: String
+  episodes: EpisodeRelateToManyForUpdateInput
 }
 
 input KeywordUpdateArgs {
@@ -290,13 +311,8 @@ input KeywordUpdateArgs {
 }
 
 input KeywordCreateInput {
-  keyword: String
-  keywordRelation: EpisodeRelateToManyForCreateInput
-}
-
-input EpisodeRelateToManyForCreateInput {
-  create: [EpisodeCreateInput!]
-  connect: [EpisodeWhereUniqueInput!]
+  name: String
+  episodes: EpisodeRelateToManyForCreateInput
 }
 
 """

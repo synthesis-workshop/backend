@@ -13,29 +13,32 @@ generator client {
 
 model User {
   id            String    @id @default(uuid())
-  name          String    @unique @default("")
+  name          String    @default("")
   email         String    @unique @default("")
   password      String
+  isAdmin       Boolean   @default(true)
   status        String?   @default("active")
   createdAt     DateTime? @default(now())
   lastLoginDate DateTime? @default(now())
 }
 
 model Episode {
-  id             String    @id @default(uuid())
-  title          String    @default("")
-  description    String    @default("")
-  episodeNumber  Float?    @unique
-  section        String    @default("")
-  runtime        String    @default("00:00")
-  youtubeVideoId String    @default("")
-  publishedAt    DateTime?
-  status         String?   @default("draft")
-  keyword        Keyword[] @relation("Episode_keyword")
+  id                           String    @id @default(uuid())
+  title                        String    @default("")
+  description                  Json      @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  episodeNumber                Float     @unique
+  category                     String    @default("")
+  runtime                      String    @default("00:00")
+  youtubeVideoId               String    @default("")
+  publishedAt                  DateTime? @default(now())
+  status                       String    @default("draft")
+  relatedEpisodes              Episode[] @relation("Episode_relatedEpisodes")
+  keywords                     Keyword[] @relation("Episode_keywords")
+  from_Episode_relatedEpisodes Episode[] @relation("Episode_relatedEpisodes")
 }
 
 model Keyword {
-  id              String    @id @default(uuid())
-  keyword         String    @default("")
-  keywordRelation Episode[] @relation("Episode_keyword")
+  id       String    @id @default(uuid())
+  name     String    @default("")
+  episodes Episode[] @relation("Episode_keywords")
 }
