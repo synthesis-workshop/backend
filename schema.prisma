@@ -50,6 +50,19 @@ model Keyword {
   episodes Episode[] @relation("Episode_keywords")
 }
 
+model Poster {
+  id              String  @id @default(uuid())
+  title           String  @default("")
+  attribution     String  @default("")
+  image_filesize  Int?
+  image_extension String?
+  image_width     Int?
+  image_height    Int?
+  image_id        String?
+  file_filesize   Int?
+  file_filename   String?
+}
+
 model ProblemSet {
   id                      String   @id @default(uuid())
   title                   String   @default("")

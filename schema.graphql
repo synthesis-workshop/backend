@@ -382,6 +382,72 @@ input KeywordCreateInput {
   episodes: EpisodeRelateToManyForCreateInput
 }
 
+type Poster {
+  id: ID!
+  title: String
+  attribution: String
+  image: ImageFieldOutput
+  file: FileFieldOutput
+}
+
+type ImageFieldOutput {
+  id: ID!
+  filesize: Int!
+  width: Int!
+  height: Int!
+  extension: ImageExtension!
+  url: String!
+}
+
+enum ImageExtension {
+  jpg
+  png
+  webp
+  gif
+}
+
+input PosterWhereUniqueInput {
+  id: ID
+}
+
+input PosterWhereInput {
+  AND: [PosterWhereInput!]
+  OR: [PosterWhereInput!]
+  NOT: [PosterWhereInput!]
+  id: IDFilter
+  title: StringFilter
+  attribution: StringFilter
+}
+
+input PosterOrderByInput {
+  id: OrderDirection
+  title: OrderDirection
+  attribution: OrderDirection
+}
+
+input PosterUpdateInput {
+  title: String
+  attribution: String
+  image: ImageFieldInput
+  file: FileFieldInput
+}
+
+input ImageFieldInput {
+  upload: Upload!
+}
+
+input PosterUpdateArgs {
+  where: PosterWhereUniqueInput!
+  data: PosterUpdateInput!
+}
+
+input PosterCreateInput {
+  title: String
+  attribution: String
+  image: ImageFieldInput
+  file: FileFieldInput
+}
+
 type ProblemSet {
   id: ID!
   title: String
@@ -576,6 +642,12 @@ type Mutation {
   updateKeywords(data: [KeywordUpdateArgs!]!): [Keyword]
   deleteKeyword(where: KeywordWhereUniqueInput!): Keyword
   deleteKeywords(where: [KeywordWhereUniqueInput!]!): [Keyword]
+  createPoster(data: PosterCreateInput!): Poster
+  createPosters(data: [PosterCreateInput!]!): [Poster]
+  updatePoster(where: PosterWhereUniqueInput!, data: PosterUpdateInput!): Poster
+  updatePosters(data: [PosterUpdateArgs!]!): [Poster]
+  deletePoster(where: PosterWhereUniqueInput!): Poster
+  deletePosters(where: [PosterWhereUniqueInput!]!): [Poster]
   createProblemSet(data: ProblemSetCreateInput!): ProblemSet
   createProblemSets(data: [ProblemSetCreateInput!]!): [ProblemSet]
   updateProblemSet(where: ProblemSetWhereUniqueInput!, data: ProblemSetUpdateInput!): ProblemSet
@@ -623,6 +695,9 @@ type Query {
   keywords(where: KeywordWhereInput! = {}, orderBy: [KeywordOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: KeywordWhereUniqueInput): [Keyword!]
   keyword(where: KeywordWhereUniqueInput!): Keyword
   keywordsCount(where: KeywordWhereInput! = {}): Int
+  posters(where: PosterWhereInput! = {}, orderBy: [PosterOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PosterWhereUniqueInput): [Poster!]
+  poster(where: PosterWhereUniqueInput!): Poster
+  postersCount(where: PosterWhereInput! = {}): Int
   problemSets(where: ProblemSetWhereInput! = {}, orderBy: [ProblemSetOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ProblemSetWhereUniqueInput): [ProblemSet!]
   problemSet(where: ProblemSetWhereUniqueInput!): ProblemSet
   problemSetsCount(where: ProblemSetWhereInput! = {}): Int
