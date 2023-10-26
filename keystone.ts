@@ -4,7 +4,7 @@ import { config } from "@keystone-6/core";
 dotenv.config();
 
 import { withAuth, session } from "./auth";
-import * as Model from "./models";
+import * as Models from "./models";
 
 export default withAuth(
   config({
@@ -48,7 +48,7 @@ export default withAuth(
         forcePathStyle: true,
       },
     },
-    lists: Model,
+    lists: Models,
     session,
   }),
 );

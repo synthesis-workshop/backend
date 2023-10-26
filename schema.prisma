@@ -50,6 +50,12 @@ model Keyword {
   episodes Episode[] @relation("Episode_keywords")
 }
 
+model Meta {
+  id      Int  @id
+  about   Json @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  mission Json @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+}
+
 model Poster {
   id              String  @id @default(uuid())
   title           String  @default("")
@@ -87,10 +93,4 @@ model User {
   status        String?   @default("active")
   createdAt     DateTime? @default(now())
   lastLoginDate DateTime? @default(now())
-}
-
-model AboutUsSection {
-  id         Int    @id
-  aboutUs    String @default("")
-  ourMission String @default("")
 }
