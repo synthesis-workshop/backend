@@ -11,23 +11,35 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model User {
-  id            String    @id @default(uuid())
-  name          String    @default("")
-  email         String    @unique @default("")
-  password      String
-  isAdmin       Boolean   @default(true)
-  status        String?   @default("active")
-  createdAt     DateTime? @default(now())
-  lastLoginDate DateTime? @default(now())
+model Course {
+  id          String       @id @default(uuid())
+  title       String       @default("")
+  description Json         @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  problemSets ProblemSet[] @relation("Course_problemSets")
+  episodes    Episode[]    @relation("Course_episodes")
 }
 
-model Course {
-  id                     String       @id @default(uuid())
-  title                  String       @default("")
-  body                   String       @default("")
-  problemSet             ProblemSet[] @relation("Course_problemSet")
-  from_ProblemSet_course ProblemSet[] @relation("ProblemSet_course")
+model Episode {
+  id                           String       @id @default(uuid())
+  title                        String       @default("")
+  description                  Json         @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  episodeNumber                Float        @unique
+  category                     String       @default("")
+  runtime                      String       @default("00:00")
+  youtubeVideoId               String       @default("")
+  publishedAt                  DateTime?    @default(now())
+  status                       String       @default("draft")
+  relatedEpisodes              Episode[]    @relation("Episode_relatedEpisodes")
+  keywords                     Keyword[]    @relation("Episode_keywords")
+  problemSets                  ProblemSet[] @relation("ProblemSet_episode")
+  courses                      Course[]     @relation("Course_episodes")
+  from_Episode_relatedEpisodes Episode[]    @relation("Episode_relatedEpisodes")
+}
+
+model Keyword {
+  id       String    @id @default(uuid())
+  name     String    @default("")
+  episodes Episode[] @relation("Episode_keywords")
 }
 
 model ProblemSet {
@@ -37,8 +49,21 @@ model ProblemSet {
   problemSetFile_filename String?
   solutionFile_filesize   Int?
   solutionFile_filename   String?
-  episodeLink             String   @default("NOTE: Enter the string of characters at the end of the YouTube URL after \"v=\" here.")
   downloadCount           Int?
-  course                  Course[] @relation("ProblemSet_course")
-  from_Course_problemSet  Course[] @relation("Course_problemSet")
+  episode                 Episode? @relation("ProblemSet_episode", fields: [episodeId], references: [id])
+  episodeId               String?  @map("episode")
+  courses                 Course[] @relation("Course_problemSets")
+
+  @@index([episodeId])
+}
+
+model User {
+  id            String    @id @default(uuid())
+  name          String    @default("")
+  email         String    @unique @default("")
+  password      String
+  isAdmin       Boolean   @default(true)
+  status        String?   @default("active")
+  createdAt     DateTime? @default(now())
+  lastLoginDate DateTime? @default(now())
 }

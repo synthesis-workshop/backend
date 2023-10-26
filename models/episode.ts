@@ -30,9 +30,19 @@ export const Episode: ListConfig<Lists.Episode.TypeInfo<any>, any> = list({
       dividers: true,
       links: true,
       relationships: {
-        mention: {
+        episode: {
           listKey: "Episode",
-          label: "Mention",
+          label: "Episode",
+          selection: "id title",
+        },
+        problemSet: {
+          listKey: "ProblemSet",
+          label: "Problem Set",
+          selection: "id title",
+        },
+        course: {
+          listKey: "Course",
+          label: "Course",
           selection: "id title",
         },
       },
@@ -67,5 +77,7 @@ export const Episode: ListConfig<Lists.Episode.TypeInfo<any>, any> = list({
     }),
     relatedEpisodes: relationship({ ref: "Episode", many: true }),
     keywords: relationship({ ref: "Keyword.episodes", many: true }),
+    problemSets: relationship({ ref: "ProblemSet.episode", many: true }),
+    courses: relationship({ ref: "Course.episodes", many: true }),
   },
 });
