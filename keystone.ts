@@ -3,8 +3,8 @@ import { config } from "@keystone-6/core";
 
 dotenv.config();
 
-import { lists } from "./schema";
 import { withAuth, session } from "./auth";
+import * as Model from "./models";
 
 export default withAuth(
   config({
@@ -15,9 +15,6 @@ export default withAuth(
     db: {
       provider: "mysql",
       url: `mysql://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:3306/${process.env.DB_NAME}`,
-      onConnect: async (context) => {
-        /* ... */
-      },
       enableLogging: true,
       idField: { kind: "uuid" },
       useMigrations: true,
@@ -51,7 +48,7 @@ export default withAuth(
         forcePathStyle: true,
       },
     },
-    lists,
+    lists: Model,
     session,
   }),
 );
