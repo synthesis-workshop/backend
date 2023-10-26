@@ -13,9 +13,10 @@ generator client {
 
 model User {
   id            String    @id @default(uuid())
-  name          String    @unique @default("")
+  name          String    @default("")
   email         String    @unique @default("")
   password      String
+  isAdmin       Boolean   @default(true)
   status        String?   @default("active")
   createdAt     DateTime? @default(now())
   lastLoginDate DateTime? @default(now())
