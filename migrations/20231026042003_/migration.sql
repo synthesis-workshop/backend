@@ -8,6 +8,17 @@ CREATE TABLE `Course` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `Download` (
+    `id` VARCHAR(191) NOT NULL,
+    `title` VARCHAR(191) NOT NULL DEFAULT '',
+    `lastUpdated` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `fileDownload_filesize` INTEGER NULL,
+    `fileDownload_filename` VARCHAR(191) NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Episode` (
     `id` VARCHAR(191) NOT NULL,
     `title` VARCHAR(191) NOT NULL DEFAULT '',
@@ -27,6 +38,31 @@ CREATE TABLE `Episode` (
 CREATE TABLE `Keyword` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL DEFAULT '',
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Meta` (
+    `id` INTEGER NOT NULL,
+    `about` JSON NOT NULL,
+    `mission` JSON NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Poster` (
+    `id` VARCHAR(191) NOT NULL,
+    `title` VARCHAR(191) NOT NULL DEFAULT '',
+    `attribution` VARCHAR(191) NOT NULL DEFAULT '',
+    `image_filesize` INTEGER NULL,
+    `image_extension` VARCHAR(191) NULL,
+    `image_width` INTEGER NULL,
+    `image_height` INTEGER NULL,
+    `image_id` VARCHAR(191) NULL,
+    `file_filesize` INTEGER NULL,
+    `file_filename` VARCHAR(191) NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

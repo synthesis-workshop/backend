@@ -382,6 +382,50 @@ input KeywordCreateInput {
   episodes: EpisodeRelateToManyForCreateInput
 }
 
+type Meta {
+  id: ID!
+  about: Meta_about_Document
+  mission: Meta_mission_Document
+}
+
+type Meta_about_Document {
+  document(hydrateRelationships: Boolean! = false): JSON!
+}
+
+type Meta_mission_Document {
+  document(hydrateRelationships: Boolean! = false): JSON!
+}
+
+input MetaWhereUniqueInput {
+  id: ID
+}
+
+input MetaWhereInput {
+  AND: [MetaWhereInput!]
+  OR: [MetaWhereInput!]
+  NOT: [MetaWhereInput!]
+  id: IDFilter
+}
+
+input MetaOrderByInput {
+  id: OrderDirection
+}
+
+input MetaUpdateInput {
+  about: JSON
+  mission: JSON
+}
+
+input MetaUpdateArgs {
+  where: MetaWhereUniqueInput! = {id: 1}
+  data: MetaUpdateInput!
+}
+
+input MetaCreateInput {
+  about: JSON
+  mission: JSON
+}
+
 type Poster {
   id: ID!
   title: String
@@ -642,6 +686,12 @@ type Mutation {
   updateKeywords(data: [KeywordUpdateArgs!]!): [Keyword]
   deleteKeyword(where: KeywordWhereUniqueInput!): Keyword
   deleteKeywords(where: [KeywordWhereUniqueInput!]!): [Keyword]
+  createMeta(data: MetaCreateInput!): Meta
+  createMetas(data: [MetaCreateInput!]!): [Meta]
+  updateMeta(where: MetaWhereUniqueInput! = {id: 1}, data: MetaUpdateInput!): Meta
+  updateMetas(data: [MetaUpdateArgs!]!): [Meta]
+  deleteMeta(where: MetaWhereUniqueInput! = {id: 1}): Meta
+  deleteMetas(where: [MetaWhereUniqueInput!]!): [Meta]
   createPoster(data: PosterCreateInput!): Poster
   createPosters(data: [PosterCreateInput!]!): [Poster]
   updatePoster(where: PosterWhereUniqueInput!, data: PosterUpdateInput!): Poster
@@ -695,6 +745,9 @@ type Query {
   keywords(where: KeywordWhereInput! = {}, orderBy: [KeywordOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: KeywordWhereUniqueInput): [Keyword!]
   keyword(where: KeywordWhereUniqueInput!): Keyword
   keywordsCount(where: KeywordWhereInput! = {}): Int
+  metas(where: MetaWhereInput! = {id: {equals: 1}}, orderBy: [MetaOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: MetaWhereUniqueInput): [Meta!]
+  meta(where: MetaWhereUniqueInput! = {id: 1}): Meta
+  metasCount(where: MetaWhereInput! = {id: {equals: 1}}): Int
   posters(where: PosterWhereInput! = {}, orderBy: [PosterOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PosterWhereUniqueInput): [Poster!]
   poster(where: PosterWhereUniqueInput!): Poster
   postersCount(where: PosterWhereInput! = {}): Int
