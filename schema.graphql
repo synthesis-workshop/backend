@@ -569,6 +569,86 @@ input EpisodeRelateToOneForCreateInput {
   connect: EpisodeWhereUniqueInput
 }
 
+type Publication {
+  id: ID!
+  title: String
+  description: Publication_description_Document
+  publishedDate: CalendarDay
+  publisher: String
+  link: String
+  doi: String
+  author: String
+}
+
+type Publication_description_Document {
+  document(hydrateRelationships: Boolean! = false): JSON!
+}
+
+scalar CalendarDay @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
+
+input PublicationWhereUniqueInput {
+  id: ID
+}
+
+input PublicationWhereInput {
+  AND: [PublicationWhereInput!]
+  OR: [PublicationWhereInput!]
+  NOT: [PublicationWhereInput!]
+  id: IDFilter
+  title: StringFilter
+  publishedDate: CalendarDayFilter
+  publisher: StringFilter
+  link: StringFilter
+  doi: StringFilter
+  author: StringFilter
+}
+
+input CalendarDayFilter {
+  equals: CalendarDay
+  in: [CalendarDay!]
+  notIn: [CalendarDay!]
+  lt: CalendarDay
+  lte: CalendarDay
+  gt: CalendarDay
+  gte: CalendarDay
+  not: CalendarDayFilter
+}
+
+input PublicationOrderByInput {
+  id: OrderDirection
+  title: OrderDirection
+  publishedDate: OrderDirection
+  publisher: OrderDirection
+  link: OrderDirection
+  doi: OrderDirection
+  author: OrderDirection
+}
+
+input PublicationUpdateInput {
+  title: String
+  description: JSON
+  publishedDate: CalendarDay
+  publisher: String
+  link: String
+  doi: String
+  author: String
+}
+
+input PublicationUpdateArgs {
+  where: PublicationWhereUniqueInput!
+  data: PublicationUpdateInput!
+}
+
+input PublicationCreateInput {
+  title: String
+  description: JSON
+  publishedDate: CalendarDay
+  publisher: String
+  link: String
+  doi: String
+  author: String
+}
+
 type User {
   id: ID!
   name: String
@@ -704,6 +784,12 @@ type Mutation {
   updateProblemSets(data: [ProblemSetUpdateArgs!]!): [ProblemSet]
   deleteProblemSet(where: ProblemSetWhereUniqueInput!): ProblemSet
   deleteProblemSets(where: [ProblemSetWhereUniqueInput!]!): [ProblemSet]
+  createPublication(data: PublicationCreateInput!): Publication
+  createPublications(data: [PublicationCreateInput!]!): [Publication]
+  updatePublication(where: PublicationWhereUniqueInput!, data: PublicationUpdateInput!): Publication
+  updatePublications(data: [PublicationUpdateArgs!]!): [Publication]
+  deletePublication(where: PublicationWhereUniqueInput!): Publication
+  deletePublications(where: [PublicationWhereUniqueInput!]!): [Publication]
   createUser(data: UserCreateInput!): User
   createUsers(data: [UserCreateInput!]!): [User]
   updateUser(where: UserWhereUniqueInput!, data: UserUpdateInput!): User
@@ -754,6 +840,9 @@ type Query {
   problemSets(where: ProblemSetWhereInput! = {}, orderBy: [ProblemSetOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ProblemSetWhereUniqueInput): [ProblemSet!]
   problemSet(where: ProblemSetWhereUniqueInput!): ProblemSet
   problemSetsCount(where: ProblemSetWhereInput! = {}): Int
+  publications(where: PublicationWhereInput! = {}, orderBy: [PublicationOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PublicationWhereUniqueInput): [Publication!]
+  publication(where: PublicationWhereUniqueInput!): Publication
+  publicationsCount(where: PublicationWhereInput! = {}): Int
   users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
   user(where: UserWhereUniqueInput!): User
   usersCount(where: UserWhereInput! = {}): Int
