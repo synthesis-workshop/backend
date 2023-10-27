@@ -84,6 +84,17 @@ model ProblemSet {
   @@index([episodeId])
 }
 
+model Publication {
+  id            String   @id @default(uuid())
+  title         String   @default("")
+  description   Json     @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  publishedDate DateTime @mysql.Date
+  publisher     String   @default("")
+  link          String   @default("")
+  doi           String   @default("")
+  author        String   @default("")
+}
+
 model User {
   id            String    @id @default(uuid())
   name          String    @default("")
