@@ -95,6 +95,17 @@ model Publication {
   author        String   @default("")
 }
 
+model TeamMember {
+  id              String  @id @default(uuid())
+  name            String  @default("")
+  title           String  @default("")
+  image_filesize  Int?
+  image_extension String?
+  image_width     Int?
+  image_height    Int?
+  image_id        String?
+}
+
 model User {
   id            String    @id @default(uuid())
   name          String    @default("")
