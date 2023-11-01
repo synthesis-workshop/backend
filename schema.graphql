@@ -382,6 +382,51 @@ input KeywordCreateInput {
   episodes: EpisodeRelateToManyForCreateInput
 }
 
+type Link {
+  id: ID!
+  title: String
+  link: String
+  logo: String
+}
+
+input LinkWhereUniqueInput {
+  id: ID
+}
+
+input LinkWhereInput {
+  AND: [LinkWhereInput!]
+  OR: [LinkWhereInput!]
+  NOT: [LinkWhereInput!]
+  id: IDFilter
+  title: StringFilter
+  link: StringFilter
+  logo: StringFilter
+}
+
+input LinkOrderByInput {
+  id: OrderDirection
+  title: OrderDirection
+  link: OrderDirection
+  logo: OrderDirection
+}
+
+input LinkUpdateInput {
+  title: String
+  link: String
+  logo: String
+}
+
+input LinkUpdateArgs {
+  where: LinkWhereUniqueInput!
+  data: LinkUpdateInput!
+}
+
+input LinkCreateInput {
+  title: String
+  link: String
+  logo: String
+}
+
 type Meta {
   id: ID!
   about: Meta_about_Document
@@ -766,6 +811,12 @@ type Mutation {
   updateKeywords(data: [KeywordUpdateArgs!]!): [Keyword]
   deleteKeyword(where: KeywordWhereUniqueInput!): Keyword
   deleteKeywords(where: [KeywordWhereUniqueInput!]!): [Keyword]
+  createLink(data: LinkCreateInput!): Link
+  createLinks(data: [LinkCreateInput!]!): [Link]
+  updateLink(where: LinkWhereUniqueInput!, data: LinkUpdateInput!): Link
+  updateLinks(data: [LinkUpdateArgs!]!): [Link]
+  deleteLink(where: LinkWhereUniqueInput!): Link
+  deleteLinks(where: [LinkWhereUniqueInput!]!): [Link]
   createMeta(data: MetaCreateInput!): Meta
   createMetas(data: [MetaCreateInput!]!): [Meta]
   updateMeta(where: MetaWhereUniqueInput! = {id: 1}, data: MetaUpdateInput!): Meta
@@ -831,6 +882,9 @@ type Query {
   keywords(where: KeywordWhereInput! = {}, orderBy: [KeywordOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: KeywordWhereUniqueInput): [Keyword!]
   keyword(where: KeywordWhereUniqueInput!): Keyword
   keywordsCount(where: KeywordWhereInput! = {}): Int
+  links(where: LinkWhereInput! = {}, orderBy: [LinkOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: LinkWhereUniqueInput): [Link!]
+  link(where: LinkWhereUniqueInput!): Link
+  linksCount(where: LinkWhereInput! = {}): Int
   metas(where: MetaWhereInput! = {id: {equals: 1}}, orderBy: [MetaOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: MetaWhereUniqueInput): [Meta!]
   meta(where: MetaWhereUniqueInput! = {id: 1}): Meta
   metasCount(where: MetaWhereInput! = {id: {equals: 1}}): Int
