@@ -1,9 +1,9 @@
 import { list } from "@keystone-6/core";
 import type { ListConfig } from "@keystone-6/core";
-import { text, image } from "@keystone-6/core/fields";
+import { text } from "@keystone-6/core/fields";
 import type { Lists } from ".keystone/types";
 
-export const Link: ListConfig<any> = list({
+export const Link: ListConfig<Lists.Link.TypeInfo<any>, any> = list({
   access: {
     operation: {
       query: () => true,
