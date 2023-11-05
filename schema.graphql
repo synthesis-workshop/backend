@@ -623,6 +623,8 @@ type Publication {
   link: String
   doi: String
   author: String
+  teamMembers(where: TeamMemberWhereInput! = {}, orderBy: [TeamMemberOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TeamMemberWhereUniqueInput): [TeamMember!]
+  teamMembersCount(where: TeamMemberWhereInput! = {}): Int
 }
 
 type Publication_description_Document {
@@ -646,6 +648,7 @@ input PublicationWhereInput {
   link: StringFilter
   doi: StringFilter
   author: StringFilter
+  teamMembers: TeamMemberManyRelationFilter
 }
 
 input CalendarDayFilter {
@@ -657,6 +660,12 @@ input CalendarDayFilter {
   gt: CalendarDay
   gte: CalendarDay
   not: CalendarDayFilter
+}
+
+input TeamMemberManyRelationFilter {
+  every: TeamMemberWhereInput
+  some: TeamMemberWhereInput
+  none: TeamMemberWhereInput
 }
 
 input PublicationOrderByInput {
@@ -677,6 +686,14 @@ input PublicationUpdateInput {
   link: String
   doi: String
   author: String
+  teamMembers: TeamMemberRelateToManyForUpdateInput
+}
+
+input TeamMemberRelateToManyForUpdateInput {
+  disconnect: [TeamMemberWhereUniqueInput!]
+  set: [TeamMemberWhereUniqueInput!]
+  create: [TeamMemberCreateInput!]
+  connect: [TeamMemberWhereUniqueInput!]
 }
 
 input PublicationUpdateArgs {
@@ -692,6 +709,104 @@ input PublicationCreateInput {
   link: String
   doi: String
   author: String
+  teamMembers: TeamMemberRelateToManyForCreateInput
+}
+
+input TeamMemberRelateToManyForCreateInput {
+  create: [TeamMemberCreateInput!]
+  connect: [TeamMemberWhereUniqueInput!]
+}
+
+type TeamMember {
+  id: ID!
+  name: String
+  title: String
+  group: Int
+  description: TeamMember_description_Document
+  image: ImageFieldOutput
+  cv: FileFieldOutput
+  publications(where: PublicationWhereInput! = {}, orderBy: [PublicationOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PublicationWhereUniqueInput): [Publication!]
+  publicationsCount(where: PublicationWhereInput! = {}): Int
+}
+
+type TeamMember_description_Document {
+  document(hydrateRelationships: Boolean! = false): JSON!
+}
+
+input TeamMemberWhereUniqueInput {
+  id: ID
+}
+
+input TeamMemberWhereInput {
+  AND: [TeamMemberWhereInput!]
+  OR: [TeamMemberWhereInput!]
+  NOT: [TeamMemberWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  title: StringFilter
+  group: IntFilter
+  publications: PublicationManyRelationFilter
+}
+
+input IntFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntFilter
+}
+
+input PublicationManyRelationFilter {
+  every: PublicationWhereInput
+  some: PublicationWhereInput
+  none: PublicationWhereInput
+}
+
+input TeamMemberOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  title: OrderDirection
+  group: OrderDirection
+}
+
+input TeamMemberUpdateInput {
+  name: String
+  title: String
+  group: Int
+  description: JSON
+  image: ImageFieldInput
+  cv: FileFieldInput
+  publications: PublicationRelateToManyForUpdateInput
+}
+
+input PublicationRelateToManyForUpdateInput {
+  disconnect: [PublicationWhereUniqueInput!]
+  set: [PublicationWhereUniqueInput!]
+  create: [PublicationCreateInput!]
+  connect: [PublicationWhereUniqueInput!]
+}
+
+input TeamMemberUpdateArgs {
+  where: TeamMemberWhereUniqueInput!
+  data: TeamMemberUpdateInput!
+}
+
+input TeamMemberCreateInput {
+  name: String
+  title: String
+  group: Int
+  description: JSON
+  image: ImageFieldInput
+  cv: FileFieldInput
+  publications: PublicationRelateToManyForCreateInput
+}
+
+input PublicationRelateToManyForCreateInput {
+  create: [PublicationCreateInput!]
+  connect: [PublicationWhereUniqueInput!]
 }
 
 type User {
@@ -841,6 +956,12 @@ type Mutation {
   updatePublications(data: [PublicationUpdateArgs!]!): [Publication]
   deletePublication(where: PublicationWhereUniqueInput!): Publication
   deletePublications(where: [PublicationWhereUniqueInput!]!): [Publication]
+  createTeamMember(data: TeamMemberCreateInput!): TeamMember
+  createTeamMembers(data: [TeamMemberCreateInput!]!): [TeamMember]
+  updateTeamMember(where: TeamMemberWhereUniqueInput!, data: TeamMemberUpdateInput!): TeamMember
+  updateTeamMembers(data: [TeamMemberUpdateArgs!]!): [TeamMember]
+  deleteTeamMember(where: TeamMemberWhereUniqueInput!): TeamMember
+  deleteTeamMembers(where: [TeamMemberWhereUniqueInput!]!): [TeamMember]
   createUser(data: UserCreateInput!): User
   createUsers(data: [UserCreateInput!]!): [User]
   updateUser(where: UserWhereUniqueInput!, data: UserUpdateInput!): User
@@ -897,6 +1018,9 @@ type Query {
   publications(where: PublicationWhereInput! = {}, orderBy: [PublicationOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: PublicationWhereUniqueInput): [Publication!]
   publication(where: PublicationWhereUniqueInput!): Publication
   publicationsCount(where: PublicationWhereInput! = {}): Int
+  teamMembers(where: TeamMemberWhereInput! = {}, orderBy: [TeamMemberOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: TeamMemberWhereUniqueInput): [TeamMember!]
+  teamMember(where: TeamMemberWhereUniqueInput!): TeamMember
+  teamMembersCount(where: TeamMemberWhereInput! = {}): Int
   users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
   user(where: UserWhereUniqueInput!): User
   usersCount(where: UserWhereInput! = {}): Int

@@ -41,7 +41,12 @@ export const Publication: ListConfig<
       },
     }),
     publishedDate: calendarDay({ validation: { isRequired: true } }),
-    publisher: text({ validation: { isRequired: true } }),
+    publisher: text({
+      validation: { isRequired: true },
+      ui: {
+        description: "The journal or who published this paper",
+      },
+    }),
     link: text({
       validation: {
         isRequired: true,
@@ -58,6 +63,17 @@ export const Publication: ListConfig<
     }),
     author: text({
       validation: { isRequired: true },
+      ui: {
+        description: "The name that will appear on the publication card",
+      },
+    }),
+    teamMembers: relationship({
+      ref: "TeamMember.publications",
+      many: true,
+      ui: {
+        description:
+          "List any team members who should have this publication appear in their profile",
+      },
     }),
   },
 });
