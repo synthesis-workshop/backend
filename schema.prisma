@@ -92,25 +92,31 @@ model ProblemSet {
 }
 
 model Publication {
-  id            String   @id @default(uuid())
-  title         String   @default("")
-  description   Json     @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
-  publishedDate DateTime @mysql.Date
-  publisher     String   @default("")
-  link          String   @default("")
-  doi           String   @default("")
-  author        String   @default("")
+  id            String       @id @default(uuid())
+  title         String       @default("")
+  description   Json         @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  publishedDate DateTime     @mysql.Date
+  publisher     String       @default("")
+  link          String       @default("")
+  doi           String       @default("")
+  author        String       @default("")
+  teamMembers   TeamMember[] @relation("Publication_teamMembers")
 }
 
 model TeamMember {
-  id              String  @id @default(uuid())
-  name            String  @default("")
-  title           String  @default("")
+  id              String        @id @default(uuid())
+  name            String        @default("")
+  title           String        @default("")
+  group           Int
+  description     Json          @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
   image_filesize  Int?
   image_extension String?
   image_width     Int?
   image_height    Int?
   image_id        String?
+  cv_filesize     Int?
+  cv_filename     String?
+  publications    Publication[] @relation("Publication_teamMembers")
 }
 
 model User {
