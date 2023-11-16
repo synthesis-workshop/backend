@@ -431,6 +431,10 @@ type Meta {
   id: ID!
   about: Meta_about_Document
   mission: Meta_mission_Document
+  videoCount: Int
+  viewsCount: Int
+  guestsCount: Int
+  subscriberCount: Int
 }
 
 type Meta_about_Document {
@@ -450,15 +454,38 @@ input MetaWhereInput {
   OR: [MetaWhereInput!]
   NOT: [MetaWhereInput!]
   id: IDFilter
+  videoCount: IntNullableFilter
+  viewsCount: IntNullableFilter
+  guestsCount: IntNullableFilter
+  subscriberCount: IntNullableFilter
+}
+
+input IntNullableFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntNullableFilter
 }
 
 input MetaOrderByInput {
   id: OrderDirection
+  videoCount: OrderDirection
+  viewsCount: OrderDirection
+  guestsCount: OrderDirection
+  subscriberCount: OrderDirection
 }
 
 input MetaUpdateInput {
   about: JSON
   mission: JSON
+  videoCount: Int
+  viewsCount: Int
+  guestsCount: Int
+  subscriberCount: Int
 }
 
 input MetaUpdateArgs {
@@ -469,6 +496,10 @@ input MetaUpdateArgs {
 input MetaCreateInput {
   about: JSON
   mission: JSON
+  videoCount: Int
+  viewsCount: Int
+  guestsCount: Int
+  subscriberCount: Int
 }
 
 type Poster {
@@ -561,17 +592,6 @@ input ProblemSetWhereInput {
   downloadCount: IntNullableFilter
   episode: EpisodeWhereInput
   courses: CourseManyRelationFilter
-}
-
-input IntNullableFilter {
-  equals: Int
-  in: [Int!]
-  notIn: [Int!]
-  lt: Int
-  lte: Int
-  gt: Int
-  gte: Int
-  not: IntNullableFilter
 }
 
 input ProblemSetOrderByInput {

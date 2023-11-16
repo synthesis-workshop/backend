@@ -58,9 +58,13 @@ model Link {
 }
 
 model Meta {
-  id      Int  @id
-  about   Json @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
-  mission Json @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  id              Int  @id
+  about           Json @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  mission         Json @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
+  videoCount      Int?
+  viewsCount      Int?
+  guestsCount     Int?
+  subscriberCount Int?
 }
 
 model Poster {
