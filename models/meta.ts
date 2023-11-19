@@ -2,6 +2,7 @@ import { list } from "@keystone-6/core";
 import type { ListConfig } from "@keystone-6/core";
 import { document } from "@keystone-6/fields-document";
 import type { Lists } from ".keystone/types";
+import { integer } from "@keystone-6/core/fields";
 
 export const Meta: ListConfig<Lists.Meta.TypeInfo<any>, any> = list({
   access: {
@@ -23,6 +24,10 @@ export const Meta: ListConfig<Lists.Meta.TypeInfo<any>, any> = list({
       dividers: true,
       links: true,
     }),
+    videoCount: integer(),
+    viewsCount: integer(),
+    guestsCount: integer(),
+    subscriberCount: integer(),
   },
   isSingleton: true,
 });
