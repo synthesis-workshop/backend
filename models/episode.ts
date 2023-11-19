@@ -52,7 +52,17 @@ export const Episode: ListConfig<Lists.Episode.TypeInfo<any>, any> = list({
       isIndexed: "unique",
       isOrderable: true,
     }),
-    category: text({ isFilterable: true, isOrderable: true }),
+    category: select({
+      type: "integer",
+      options: [
+        { label: "Research Spotlight", value: 1 },
+        { label: "Total Synthesis", value: 2 },
+        { label: "Named Reaction", value: 3 },
+        { label: "Culture of Chemistry", value: 4 },
+      ],
+      isFilterable: true,
+      isOrderable: true,
+    }),
     runtime: text({ isOrderable: true, defaultValue: "00:00" }),
     youtubeVideoId: text({
       validation: { isRequired: true },
