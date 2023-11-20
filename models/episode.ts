@@ -53,12 +53,12 @@ export const Episode: ListConfig<Lists.Episode.TypeInfo<any>, any> = list({
       isOrderable: true,
     }),
     category: select({
-      type: "integer",
+      type: "string",
       options: [
-        { label: "Research Spotlight", value: 1 },
-        { label: "Total Synthesis", value: 2 },
-        { label: "Named Reaction", value: 3 },
-        { label: "Culture of Chemistry", value: 4 },
+        "Research Spotlight",
+        "Total Synthesis",
+        "Named Reaction",
+        "Culture of Chemistry",
       ],
       isFilterable: true,
       isOrderable: true,

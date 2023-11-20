@@ -207,7 +207,7 @@ type Episode {
   title: String
   description: Episode_description_Document
   episodeNumber: Float
-  category: Int
+  category: String
   runtime: String
   youtubeVideoId: String
   publishedAt: DateTime
@@ -238,7 +238,7 @@ input EpisodeWhereInput {
   id: IDFilter
   title: StringFilter
   episodeNumber: FloatFilter
-  category: IntNullableFilter
+  category: StringNullableFilter
   runtime: StringFilter
   youtubeVideoId: StringFilter
   publishedAt: DateTimeNullableFilter
@@ -260,15 +260,18 @@ input FloatFilter {
   not: FloatFilter
 }
 
-input IntNullableFilter {
-  equals: Int
-  in: [Int!]
-  notIn: [Int!]
-  lt: Int
-  lte: Int
-  gt: Int
-  gte: Int
-  not: IntNullableFilter
+input StringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: StringNullableFilter
 }
 
 input KeywordManyRelationFilter {
@@ -298,7 +301,7 @@ input EpisodeUpdateInput {
   title: String
   description: JSON
   episodeNumber: Float
-  category: Int
+  category: String
   runtime: String
   youtubeVideoId: String
   publishedAt: DateTime
@@ -332,7 +335,7 @@ input EpisodeCreateInput {
   title: String
   description: JSON
   episodeNumber: Float
-  category: Int
+  category: String
   runtime: String
   youtubeVideoId: String
   publishedAt: DateTime
@@ -469,6 +472,17 @@ input MetaWhereInput {
   viewsCount: IntNullableFilter
   guestsCount: IntNullableFilter
   subscriberCount: IntNullableFilter
+}
+
+input IntNullableFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntNullableFilter
 }
 
 input MetaOrderByInput {
@@ -865,20 +879,6 @@ input UserWhereInput {
 input BooleanFilter {
   equals: Boolean
   not: BooleanFilter
-}
-
-input StringNullableFilter {
-  equals: String
-  in: [String!]
-  notIn: [String!]
-  lt: String
-  lte: String
-  gt: String
-  gte: String
-  contains: String
-  startsWith: String
-  endsWith: String
-  not: StringNullableFilter
 }
 
 input UserOrderByInput {

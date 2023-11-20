@@ -32,7 +32,7 @@ model Episode {
   title                        String       @default("")
   description                  Json         @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
   episodeNumber                Float        @unique
-  category                     Int?
+  category                     String?
   runtime                      String       @default("00:00")
   youtubeVideoId               String       @default("")
   publishedAt                  DateTime?    @default(now())
