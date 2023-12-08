@@ -11,11 +11,7 @@ export default withAuth(
     server: {
       port: 8080,
       cors: {
-        origin: [
-          "http://localhost:3000",
-          "http://synthesis-workshop.com.s3-website-us-east-1.amazonaws.com/",
-        ],
-        allowedHeaders: "Access-Control-Allow-Origin",
+        origin: "*",
         methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
       },
     },
