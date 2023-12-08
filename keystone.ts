@@ -15,6 +15,8 @@ export default withAuth(
           "http://localhost:3000",
           "http://synthesis-workshop.com.s3-website-us-east-1.amazonaws.com/",
         ],
+        allowedHeaders: "Access-Control-Allow-Origin",
+        methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
       },
     },
     db: {
