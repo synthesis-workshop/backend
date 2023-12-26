@@ -53,5 +53,5 @@ export default withAuth(
     },
     lists: Models,
     session,
-  })
+  }),
 );
