@@ -9,11 +9,16 @@ type Course {
   problemSetsCount(where: ProblemSetWhereInput! = {}): Int
   episodes(where: EpisodeWhereInput! = {}, orderBy: [EpisodeOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: EpisodeWhereUniqueInput): [Episode!]
   episodesCount(where: EpisodeWhereInput! = {}): Int
+  durationHrs: Int
+  price: Int
+  publishedAt: DateTime
 }
 
 type Course_description_Document {
   document(hydrateRelationships: Boolean! = false): JSON!
 }
+
+scalar DateTime @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
 
 input CourseWhereUniqueInput {
   id: ID
@@ -27,6 +32,9 @@ input CourseWhereInput {
   title: StringFilter
   problemSets: ProblemSetManyRelationFilter
   episodes: EpisodeManyRelationFilter
+  durationHrs: IntFilter
+  price: IntFilter
+  publishedAt: DateTimeNullableFilter
 }
 
 input IDFilter {
@@ -80,9 +88,34 @@ input EpisodeManyRelationFilter {
   none: EpisodeWhereInput
 }
 
+input IntFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntFilter
+}
+
+input DateTimeNullableFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: DateTimeNullableFilter
+}
+
 input CourseOrderByInput {
   id: OrderDirection
   title: OrderDirection
+  durationHrs: OrderDirection
+  price: OrderDirection
+  publishedAt: OrderDirection
 }
 
 enum OrderDirection {
@@ -95,6 +128,9 @@ input CourseUpdateInput {
   description: JSON
   problemSets: ProblemSetRelateToManyForUpdateInput
   episodes: EpisodeRelateToManyForUpdateInput
+  durationHrs: Int
+  price: Int
+  publishedAt: DateTime
 }
 
 input ProblemSetRelateToManyForUpdateInput {
@@ -121,6 +157,9 @@ input CourseCreateInput {
   description: JSON
   problemSets: ProblemSetRelateToManyForCreateInput
   episodes: EpisodeRelateToManyForCreateInput
+  durationHrs: Int
+  price: Int
+  publishedAt: DateTime
 }
 
 input ProblemSetRelateToManyForCreateInput {
@@ -140,8 +179,6 @@ type Download {
   fileDownload: FileFieldOutput
 }
 
-scalar DateTime @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
-
 type FileFieldOutput {
   filename: String!
   filesize: Int!
@@ -159,17 +196,6 @@ input DownloadWhereInput {
   id: IDFilter
   title: StringFilter
   lastUpdated: DateTimeNullableFilter
-}
-
-input DateTimeNullableFilter {
-  equals: DateTime
-  in: [DateTime!]
-  notIn: [DateTime!]
-  lt: DateTime
-  lte: DateTime
-  gt: DateTime
-  gte: DateTime
-  not: DateTimeNullableFilter
 }
 
 input DownloadOrderByInput {
@@ -780,17 +806,6 @@ input TeamMemberWhereInput {
   title: StringFilter
   group: IntFilter
   publications: PublicationManyRelationFilter
-}
-
-input IntFilter {
-  equals: Int
-  in: [Int!]
-  notIn: [Int!]
-  lt: Int
-  lte: Int
-  gt: Int
-  gte: Int
-  not: IntFilter
 }
 
 input PublicationManyRelationFilter {

@@ -1,6 +1,11 @@
 import { list } from "@keystone-6/core";
 import type { ListConfig } from "@keystone-6/core";
-import { text, relationship } from "@keystone-6/core/fields";
+import {
+  text,
+  relationship,
+  integer,
+  timestamp,
+} from "@keystone-6/core/fields";
 import { document } from "@keystone-6/fields-document";
 import type { Lists } from ".keystone/types";
 
@@ -36,5 +41,18 @@ export const Course: ListConfig<Lists.Course.TypeInfo<any>, any> = list({
     }),
     problemSets: relationship({ ref: "ProblemSet.courses", many: true }),
     episodes: relationship({ ref: "Episode.courses", many: true }),
+    durationHrs: integer({
+      validation: { min: 0, isRequired: true },
+      defaultValue: 0,
+    }),
+    price: integer({
+      validation: { min: 0, isRequired: true },
+      defaultValue: 0,
+    }),
+    publishedAt: timestamp({
+      isFilterable: true,
+      isOrderable: true,
+      defaultValue: { kind: "now" },
+    }),
   },
 });

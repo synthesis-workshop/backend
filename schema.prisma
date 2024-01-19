@@ -17,6 +17,9 @@ model Course {
   description Json         @default("[{\"type\":\"paragraph\",\"children\":[{\"text\":\"\"}]}]")
   problemSets ProblemSet[] @relation("Course_problemSets")
   episodes    Episode[]    @relation("Course_episodes")
+  durationHrs Int          @default(0)
+  price       Int          @default(0)
+  publishedAt DateTime?    @default(now())
 }
 
 model Download {
