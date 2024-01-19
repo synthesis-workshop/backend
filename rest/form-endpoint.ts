@@ -3,7 +3,7 @@ import { KeystoneContext } from "@keystone-6/core/types";
 export const GoogleFormSubmission = async (
   req: any,
   res: any,
-  commonContext: KeystoneContext<any>
+  commonContext: KeystoneContext<any>,
 ) => {
   const data = req.body;
 
@@ -21,7 +21,7 @@ export const GoogleFormSubmission = async (
     {
       method: "POST",
       body: formData,
-    }
+    },
   ).catch((err) => {
     console.log(err);
   });
