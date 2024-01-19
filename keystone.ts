@@ -1,5 +1,7 @@
 import dotenv from "dotenv";
 import { config } from "@keystone-6/core";
+import { GoogleFormSubmission } from "./rest/form-endpoint";
+import express from "express";
 
 dotenv.config();
 
@@ -13,6 +15,12 @@ export default withAuth(
       cors: {
         origin: "*",
         methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+      },
+      extendExpressApp: async (app, commonContext) => {
+        app.use(express.json());
+        app.post("/api/email-message", async (req, res) => {
+          GoogleFormSubmission(req, res, commonContext);
+        });
       },
     },
     db: {

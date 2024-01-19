@@ -27,6 +27,14 @@ model Download {
   fileDownload_filename String?
 }
 
+model EmailMessage {
+  id      String @id @default(uuid())
+  name    String @default("")
+  email   String @default("")
+  subject String @default("")
+  message String @default("")
+}
+
 model Episode {
   id                           String       @id @default(uuid())
   title                        String       @default("")
