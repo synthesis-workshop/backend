@@ -10,7 +10,7 @@ export const EmailMessage: ListConfig<
   access: {
     operation: {
       query: () => true,
-      create: ({ session }) => !!session?.data.isAdmin,
+      create: ({}) => true,
       update: ({ session }) => !!session?.data.isAdmin,
       delete: ({ session }) => !!session?.data.isAdmin,
     },
