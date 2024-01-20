@@ -228,6 +228,56 @@ input DownloadCreateInput {
   fileDownload: FileFieldInput
 }
 
+type EmailMessage {
+  id: ID!
+  name: String
+  email: String
+  subject: String
+  message: String
+}
+
+input EmailMessageWhereUniqueInput {
+  id: ID
+}
+
+input EmailMessageWhereInput {
+  AND: [EmailMessageWhereInput!]
+  OR: [EmailMessageWhereInput!]
+  NOT: [EmailMessageWhereInput!]
+  id: IDFilter
+  name: StringFilter
+  email: StringFilter
+  subject: StringFilter
+  message: StringFilter
+}
+
+input EmailMessageOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  email: OrderDirection
+  subject: OrderDirection
+  message: OrderDirection
+}
+
+input EmailMessageUpdateInput {
+  name: String
+  email: String
+  subject: String
+  message: String
+}
+
+input EmailMessageUpdateArgs {
+  where: EmailMessageWhereUniqueInput!
+  data: EmailMessageUpdateInput!
+}
+
+input EmailMessageCreateInput {
+  name: String
+  email: String
+  subject: String
+  message: String
+}
+
 type Episode {
   id: ID!
   title: String
@@ -949,6 +999,12 @@ type Mutation {
   updateDownloads(data: [DownloadUpdateArgs!]!): [Download]
   deleteDownload(where: DownloadWhereUniqueInput!): Download
   deleteDownloads(where: [DownloadWhereUniqueInput!]!): [Download]
+  createEmailMessage(data: EmailMessageCreateInput!): EmailMessage
+  createEmailMessages(data: [EmailMessageCreateInput!]!): [EmailMessage]
+  updateEmailMessage(where: EmailMessageWhereUniqueInput!, data: EmailMessageUpdateInput!): EmailMessage
+  updateEmailMessages(data: [EmailMessageUpdateArgs!]!): [EmailMessage]
+  deleteEmailMessage(where: EmailMessageWhereUniqueInput!): EmailMessage
+  deleteEmailMessages(where: [EmailMessageWhereUniqueInput!]!): [EmailMessage]
   createEpisode(data: EpisodeCreateInput!): Episode
   createEpisodes(data: [EpisodeCreateInput!]!): [Episode]
   updateEpisode(where: EpisodeWhereUniqueInput!, data: EpisodeUpdateInput!): Episode
@@ -1032,6 +1088,9 @@ type Query {
   downloads(where: DownloadWhereInput! = {}, orderBy: [DownloadOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: DownloadWhereUniqueInput): [Download!]
   download(where: DownloadWhereUniqueInput!): Download
   downloadsCount(where: DownloadWhereInput! = {}): Int
+  emailMessages(where: EmailMessageWhereInput! = {}, orderBy: [EmailMessageOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: EmailMessageWhereUniqueInput): [EmailMessage!]
+  emailMessage(where: EmailMessageWhereUniqueInput!): EmailMessage
+  emailMessagesCount(where: EmailMessageWhereInput! = {}): Int
   episodes(where: EpisodeWhereInput! = {}, orderBy: [EpisodeOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: EpisodeWhereUniqueInput): [Episode!]
   episode(where: EpisodeWhereUniqueInput!): Episode
   episodesCount(where: EpisodeWhereInput! = {}): Int

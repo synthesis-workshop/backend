@@ -9,3 +9,4 @@ export * from "./problem-set";
 export * from "./publication";
 export * from "./user";
 export * from "./team-member";
+export * from "./email-message";
