@@ -52,7 +52,7 @@ export const Publication: ListConfig<
         isRequired: true,
         match: {
           regex: new RegExp(
-            /^(https?:\/\/)?[\w-]+(\.[\w-]+)+([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])?$/i,
+            /^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/,
           ),
           explanation: "Link must be a valid URL",
         },
