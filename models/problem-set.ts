@@ -1,6 +1,6 @@
-import { list } from "@keystone-6/core";
+import { graphql, list } from "@keystone-6/core";
 import type { ListConfig } from "@keystone-6/core";
-import { text, relationship, integer, file } from "@keystone-6/core/fields";
+import { text, relationship, file } from "@keystone-6/core/fields";
 import type { Lists } from ".keystone/types";
 
 export const ProblemSet: ListConfig<Lists.ProblemSet.TypeInfo<any>, any> = list(
@@ -21,12 +21,6 @@ export const ProblemSet: ListConfig<Lists.ProblemSet.TypeInfo<any>, any> = list(
       }),
       problemSetFile: file({ storage: "s3_file_storage" }),
       solutionFile: file({ storage: "s3_file_storage" }),
-      // This will need to be handled later via a custom resolver that gets invoked when the download button is clicked
-      downloadCount: integer({
-        validation: { min: 0 },
-        isOrderable: true,
-        isFilterable: true,
-      }),
       episode: relationship({ ref: "Episode.problemSets", many: false }),
       courses: relationship({ ref: "Course.problemSets", many: true }),
     },
