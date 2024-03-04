@@ -663,10 +663,10 @@ type ProblemSet {
   title: String
   problemSetFile: FileFieldOutput
   solutionFile: FileFieldOutput
-  downloadCount: Int
   episode: Episode
   courses(where: CourseWhereInput! = {}, orderBy: [CourseOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: CourseWhereUniqueInput): [Course!]
   coursesCount(where: CourseWhereInput! = {}): Int
+  downloadCount: Int
 }
 
 input ProblemSetWhereUniqueInput {
@@ -679,9 +679,9 @@ input ProblemSetWhereInput {
   NOT: [ProblemSetWhereInput!]
   id: IDFilter
   title: StringFilter
-  downloadCount: IntNullableFilter
   episode: EpisodeWhereInput
   courses: CourseManyRelationFilter
+  downloadCount: IntNullableFilter
 }
 
 input ProblemSetOrderByInput {
@@ -694,9 +694,9 @@ input ProblemSetUpdateInput {
   title: String
   problemSetFile: FileFieldInput
   solutionFile: FileFieldInput
-  downloadCount: Int
   episode: EpisodeRelateToOneForUpdateInput
   courses: CourseRelateToManyForUpdateInput
+  downloadCount: Int
 }
 
 input EpisodeRelateToOneForUpdateInput {
@@ -714,9 +714,9 @@ input ProblemSetCreateInput {
   title: String
   problemSetFile: FileFieldInput
   solutionFile: FileFieldInput
-  downloadCount: Int
   episode: EpisodeRelateToOneForCreateInput
   courses: CourseRelateToManyForCreateInput
+  downloadCount: Int
 }
 
 input EpisodeRelateToOneForCreateInput {

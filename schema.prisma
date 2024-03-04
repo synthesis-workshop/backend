@@ -98,10 +98,10 @@ model ProblemSet {
   problemSetFile_filename String?
   solutionFile_filesize   Int?
   solutionFile_filename   String?
-  downloadCount           Int?
   episode                 Episode? @relation("ProblemSet_episode", fields: [episodeId], references: [id])
   episodeId               String?  @map("episode")
   courses                 Course[] @relation("Course_problemSets")
+  downloadCount           Int?     @default(0)
 
   @@index([episodeId])
 }
