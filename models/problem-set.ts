@@ -1,6 +1,6 @@
 import { graphql, list } from "@keystone-6/core";
 import type { ListConfig } from "@keystone-6/core";
-import { text, relationship, file } from "@keystone-6/core/fields";
+import { text, relationship, file, integer } from "@keystone-6/core/fields";
 import type { Lists } from ".keystone/types";
 
 export const ProblemSet: ListConfig<Lists.ProblemSet.TypeInfo<any>, any> = list(
@@ -23,6 +23,7 @@ export const ProblemSet: ListConfig<Lists.ProblemSet.TypeInfo<any>, any> = list(
       solutionFile: file({ storage: "s3_file_storage" }),
       episode: relationship({ ref: "Episode.problemSets", many: false }),
       courses: relationship({ ref: "Course.problemSets", many: true }),
+      downloadCount: integer({ defaultValue: 0 }),
     },
   },
 );
